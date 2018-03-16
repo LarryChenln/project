@@ -1,0 +1,85 @@
+#!/usr/bin/python3
+# -*- coding:utf-8 -*-
+# create all account ID 
+import string
+import random
+import os,sys
+from datetime import datetime
+
+# 时间戳
+now_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+#随机密码
+def My_Password():
+    strs=string.ascii_letters+string.digits
+    my_passwd=''.join([random.choice(strs) for x in range(0,16)])
+    return my_passwd
+
+def My_User_Password_log(func):
+    def wrap(username,password):
+        try:
+            func(username,password)
+            with open('./all_user_password.log','a') as f:
+                f.write('\n type:{model_name}\t username:{username}\t password:{password}\t {now_time}\n'.format(model_name=func.__name__,username=username,password=password,now_time=now_time))
+        except:
+            print('error create user failed !')
+        #return func(username,password)
+    return wrap
+    
+
+@My_User_Password_log
+def create_git_user(username,password):
+    print('Your git account : {username}\t Password: {password}'.format(username=username,password=password))
+@My_User_Password_log
+def create_linux_user(username,password):
+    print('Your linux account : {username}\t Password: {password}'.format(username=username,password=password))
+    #run("fab -f fabric.py create_user",events={'(?i)username:':username,'(?i)assword:':password})
+@My_User_Password_log
+def create_svn_user(username,password):
+    print('Your svn account : {username}\t Password: {password}'.format(username=username,password=password))
+
+li=[1,2,3,4]
+Flag=True
+while Flag:
+    print('''
+    -------------------------------------
+    1. create git user 
+    2. create linux user
+    3. create svn user
+    4. quit
+
+    help
+    -------------------------------------
+    ''')
+
+    input1=int(input('Pls enter you want plan num:'))
+    if input1 in li:
+        if input1 == 4:
+            print('Good bye !')
+            break
+        user_name=input('Pls input your user name:')
+        password=My_Password()
+        if input1 == 1:
+            create_git_user(user_name,password)
+        elif input1 == 2:
+            create_linux_user(user_name,password)
+        elif input1 == 3:
+            create_svn_user(user_name,password)
+        elif input1 == 4:
+            print('Good bye !')
+            break
+
+    
+    else:
+        print('Not has you num')
+        
+        while 1:
+            input2=input('是否继续(y|n) :')
+            if input2 == "y":
+                break
+            
+            else:
+                print('Good bye !')
+                break
+        break
+
