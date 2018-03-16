@@ -1,0 +1,104 @@
+#!/usr/bin/python3.6
+# -*- coding:utf-8 -*-
+# by larry 2018-03-12
+###description:   pip install fabric3 for python3.x
+#from fabric.api import run,execute,roles,env
+from fabric.api import *
+from fabric.colors import *
+env.roledefs={
+    'webservers':['192.168.0.76','192.168.0.97'],
+    'dbservers':['172.17.0.2','172.17.2.1'],
+    'nginx_servers':['192.168.0.76']
+}
+
+env.user='root'
+env.hosts=['192.168.0.76']
+env.password='idoukou'
+env.warn_only = True
+@roles('dbservers')
+def get_info():
+    run('ifconfig|grep -i addr')
+    run('free -m')
+
+@roles('webservers')
+def start_nginx():
+    run('/usr/local/nginx/sbin/nginx -s reload')
+@roles('nginx_servers')
+def reload_nginx():
+    run('/usr/local/nginx/sbin/nginx -s reload')
+
+@runs_once
+def local_task():
+    local('uname -a')
+@roles('nginx_servers')
+def remote_task():
+    with cd('/tmp'):
+        run('ls -l')
+
+@runs_once
+def input_raw():
+    return prompt("Pls input directory name:",default="/home")
+def remote_task_ls(filename):
+    run("ls -l "+filename)
+@task  #限定只有go函数对fab 命令可见
+def go():
+    getdirname=input_raw()
+    remote_task_ls(getdirname)
+    ##命令行执行 fab -f fabric.py go
+
+##新建用户
+def get_username():
+    return prompt("create user pls input your username:")
+def get_password():
+    return prompt("set password Pls input your password:")
+
+@roles("nginx_servers")
+def create_users(username,password):
+    u_name=run("useradd "+username)
+    if u_name.failed:
+        run(red("username create failed "))
+        run("userdel "+str(username))
+        return
+    else:
+        flag=run("echo "+str(password) + " |passwd --stdin "+ str(username))
+        if flag.failed:
+            print(red("create user failed !"))
+            return
+        print(green("Create user Successful !"))
+        print(green("用户名: "+username+" : "+password))
+@task
+def create_user():
+    username=get_username()
+    password=get_password()
+    create_users(username,password)
+##---------------------------------end-------------------------------
+# del user
+def get_username():
+    return prompt("Pls input your username:")
+
+@roles("nginx_servers")
+def del_user(username):
+    flag=run("userdel "+str(username))
+    if flag.failed:
+        print(red("userdel user failed ..."))
+        return
+    else:
+        print(green("userdel "+str(username)+"successful !"))
+        with cd("/home"):
+            s=run("rm -fr "+str(username))
+            if s.failed:
+                print(red("rm -f "+str(username)+" dirs failed!"))
+            else:
+                print(green("rm -f "+str(username)+" dirs successful !"))
+@task
+def delete_user():
+    username=get_username()
+    del_user(username)
+############################################################################
+def deploy():
+    #execute(reload_nginx)
+    #execute(get_info)
+    #execute(local_task)
+    #execute(remote_task)
+    print()
+
