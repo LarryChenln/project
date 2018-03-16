@@ -1,0 +1,40 @@
+#!/usr/local/python3.6/bin/python3
+# -*- coding:utf-8 -*-
+import requests,os,sys,time
+import pymysql
+
+def My_status(m_id,u_id,u_name):
+    #URL='http://www.xxx.com/search/song?q='+str(u_name)
+    URL='http://www.xxx.com/search/global?keyword='+str(u_name)
+    #print(URL)
+    response=requests.get(URL)
+    if 'null' == response.text:
+        print('error music_id: {m_id} user_id:{u_id} 这首:{u_name} 未存在搜索中  '.format(m_id=m_id,u_id=u_id,u_name=u_name))
+    else:
+        #print('歌曲{music_name}未在索引中查找到， Code:{code}'.format(music_name=u_name,code=code))
+        print('music_id: {m_id} user_id:{u_id} 这首:{u_name} 存在于搜索中 '.format(m_id=m_id,u_id=u_id,u_name=u_name))
+
+
+def Mysql_connect():
+    db=pymysql.connect("120.x.x.x","user-name","123456","dbname",charset='utf8')
+    cursor=db.cursor()
+    sql='select music_id,user_id,name from mm_music;'
+    #print(sql)
+    music_count=cursor.execute(sql) 
+    for i in range(music_count):
+        try:
+
+            data = cursor.fetchone()
+            m_id=data[0]
+            u_id=data[1]
+            u_name=data[2]
+            My_status(m_id,u_id,u_name)        
+            time.sleep(1)
+        except:
+            print('music_id:{m_id}  uid: {u_id} music_name:{u_name} has an error'.format(m_id=m_id,u_id=u_id,u_name=u_name))
+    #db.commit()
+    db.close()
+
+
+if __name__=='__main__':
+    Mysql_connect()
