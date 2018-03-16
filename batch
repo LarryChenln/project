@@ -1,0 +1,72 @@
+#!/usr/bin/python3
+# -*- coding:utf-8 -*-
+## description: fabric之批量推送下载文件
+__author__='larry'
+
+from fabric.api import *
+from fabric.context_managers import *
+from fabric.contrib.console import confirm
+from fabric.colors import *
+
+env.hosts=['192.168.0.76','192.168.0.90']
+#env.exclude_hosts=['192.168.0.90'] #排除的主机
+#env.password="123456"
+## 仅端口和密码可以自定义
+env.passwords={
+        'root@192.168.0.76:22': '123456',
+        'root@192.168.0.90:22': '666123'
+              }
+env.roledefs={
+		'webservers':['192.168.0.76'],
+ 		'dbservers':['172.17.8.1','172.17.9.1']		
+	     } 
+@task
+@runs_once
+@roles("webservers")
+def tar_task():
+    with lcd("/data/ad_logs"):
+        local("tar -zcf all_log.tar.gz *.log")
+
+@task
+@roles("webservers")
+def put_task():
+    #run("mkdir /data/ad_logs")
+    with cd("/data/logs"):
+        with settings(warn_only=True):
+            #example 把所有匹配的文件推送到远程目录下
+            #result=put("/data/ad_logs/*","/data/logs/")
+
+            #example 把文件推送到远程目录下
+            result=put("/data/ad_logs/all_log.tar.gz","/data/logs/all_log.tar.gz")
+        if result.failed and not confirm("put file failed, Continue[Y/N]?"):
+            abort("Aborting put task !")
+            
+@task
+@roles('webservers')
+def get_task():
+    with settings(warn_only=True):
+        with cd('/home'):
+            status=get('*.html','/home/')
+        if status.failed and not confirm("Aborting get task failed, Continue [Y/N]?"):
+            abort('get task failed')
+        else:
+            print(green("get task OK"))
+
+		
+			
+@task
+@roles("webservers")
+def check_task():
+    with settings(warn_only=True):
+        lmd5=local("md5sum /data/ad_logs/all_log.tar.gz",capture=True).split(" ")[0]
+        rmd5=run("md5sum /data/logs/all_log.tar.gz").split(" ")[0]
+    if lmd5 == rmd5:
+        print(green("OK"))
+    else:
+        print(red("failed"))
+
+@task
+def go():
+    tar_task()
+    put_task()
+    check_task()
