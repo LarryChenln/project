@@ -1,0 +1,32 @@
+#!/usr/local/python3.6/bin/python3.6
+import os,nmap,sys
+scan_row=[]
+input_data=input('Pls input a host and port :')
+scan_row=input_data.split(" ")
+if len(scan_row) != 2:
+    print('Error example 192.168.0.0/24 22,80')
+    sys.exit()
+hosts=scan_row[0]
+port=scan_row[1]
+try:
+    nm = nmap.PortScanner()
+#except  as e:
+#    print('nmap error ',sys.exc_info())
+except:
+    print('error ',sys.exc_info())
+    sys.exit()
+try:
+    nm.scan(hosts=hosts,arguments=' -v -sS -p '+port)
+except:
+    print('Scan error',sys.exc_info()[0])
+    sys.exit(0)
+for host in nm.all_hosts():
+    print('\n\nHost : %s (%s)' % (host,nm[host].hostname()))
+    print('State: %s ' % (nm[host].state()))
+    for proto in nm[host].all_protocols():
+        print('----------------')
+        print('Protocols : %s' % proto)
+        lport=nm[host][proto].keys()
+        #lport.sort()
+        for port in lport:
+            print('Port : %s \t name: %s \t State : %s' % (port,nm[host][proto][port]['name'],nm[host][proto][port]['state']))
