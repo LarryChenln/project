@@ -1,0 +1,18 @@
+#!/usr/local/python3.6/bin/python3.6
+#coding=utf-8
+import os,sys,subprocess,logging,warnings
+import time
+warnings.filterwarnings("ignore",category=DeprecationWarning)
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+from scapy.all import traceroute
+domains=input('Pls enter a domain:')
+target=domains.split(' ')
+dport=[80]
+if len(target) >=1 and target[0] != '':
+    res,unans=traceroute(target,dport=dport,retry=-2)
+    res.graph(target="test.svg")
+    time.sleep(1)
+    subprocess.Popen("/usr/bin/convert test.svg test.png",shell=True)
+    print("download  ./test.png")
+else:
+    print('IP/domain num of errors,exit')
