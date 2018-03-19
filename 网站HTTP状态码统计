@@ -1,0 +1,21 @@
+#!/usr/bin/python3.6
+# -*- coding:utf-8 -*-
+
+from mrjob.job import MRJob
+import re
+
+class My_http_status(MRJob):
+    def mapper(self,key,line):
+        i = 0
+        for httpcode in line.split():
+            if i == 8 and re.match(r"\d{1,3}",httpcode):                              
+                yield httpcode,1
+            i+=1
+
+    def reducer(self,httpcode,occurrences):
+        yield httpcode,sum(occurrences)
+
+ 
+
+if __name__=='__main__':
+    My_http_status.run()
