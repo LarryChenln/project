@@ -1,0 +1,19 @@
+#!/usr/bin/python3.6
+# -*- coding:utf-8 -*-
+
+from mrjob.job import MRJob
+
+class My_httpfile_counter(MRJob):
+    def mapper(self,key,line):
+        i = 0
+        for httpfile in line.split():
+            if i == 6:
+                yield httpfile,1
+            i+=1
+
+    def reducer(self,key,occurrences):
+        yield key,sum(occurrences)
+
+
+if __name__=='__main__':
+    My_httpfile_counter.run()
