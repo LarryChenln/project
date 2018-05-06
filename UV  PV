@@ -1,0 +1,27 @@
+#!/usr/bin/python
+###descript:统计一段时间内的 UV
+##开始时间03:20 ~ 04:20分钟内的UV
+from mrjob.job import MRJob
+start_time = 320
+stop_time =  420
+
+
+class IpCount(MRJob):
+    def mapper(self,key,line):
+        i=0
+        for word in line.split():
+            if i == 0:
+                IP = word
+            if i == 3:
+                hm = word.split(":")
+                TM = hm[1]+hm[2]
+                if int(TM) > start_time and int(TM) < stop_time :
+                    yield IP,1
+                
+            i+=1            
+        
+    def reducer(self,IP,acc):
+        yield IP,sum(acc)
+
+if __name__ == '__main__':
+    IpCount.run()
