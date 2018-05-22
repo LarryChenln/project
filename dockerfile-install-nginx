@@ -1,0 +1,29 @@
+# version 0.0.1
+# this is my first nginx server
+FROM centos
+MAINTAINER chenlarry '759953368@qq.com'
+ADD nginx-1.6.0.tar.gz /usr/local/src
+ADD pcre-8.32.tar.gz /usr/local/src
+RUN yum install -y wget gcc gcc-c++ make openssl-devel
+RUN useradd -s /sbin/nologin -M www
+WORKDIR /usr/local/src/nginx-1.6.0
+RUN ./configure --prefix=/usr/local/nginx --user=www --group=www --with-http_ssl_module --with-http_stub_status_module --with-pcre=/usr/local/src/pcre-8.32 && make && make install
+RUN echo "daemon off;" >>/usr/local/nginx/conf/nginx.conf
+ENV PATH /usr/local/nginx/sbin:$PATH
+EXPOSE 80
+COPY hello.html /usr/local/nginx/html/
+
+# exc nginx command
+CMD ["nginx"]
+
+
+## docker file  安装nginx服务
+## build docker-image
+## docker build -t my-nginx-1:v1 /opt/docker-file/
+#
+## docker images
+## 
+## docker run -d -p 127.0.0.1:888:80 --name mynginx03 my-nginx-1:v1
+## docker ps -l
+
+##  docker start mynginx03
