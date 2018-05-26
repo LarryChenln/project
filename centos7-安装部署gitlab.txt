@@ -1,0 +1,50 @@
+centos7 一键安装gitlab
+系统配置，内存建议4G以上
+中文官网： https://www.gitlab.com.cn/installation
+一，安装依赖
+sudo yum install -y curl policycoreutils-python openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshd
+sudo firewall-cmd --permanent --add-service=http
+sudo systemctl reload firewalld
+
+sudo yum install postfix
+sudo systemctl enable postfix
+sudo systemctl start postfix
+
+
+
+二，添加下载镜像源
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash
+
+修改相应域名（后期访问gitlab）
+sudo EXTERNAL_URL="http://gitlab.idoukou.com" yum install -y gitlab-ee
+
+
+三，修改配置
+修改 gitlab 配置
+官方安装方式下，配置文件是/etc/gitlab/gitlab.rb
+gitlab nginx 端口监听修改：nginx['listen_port'] = 端口号
+gitlab 的域名：external_url '域名'
+
+修改完上述参数 执行命令 gitlab-ctrl reconfigure
+任何修改过的配置文件，都需要执行：gitlab-ctrl reconfigure
+
+启动停止：gitlab-ctl start | stop |restart
+
+四，配置NGINX
+官方安装方式下，配置文件是/opt/gitlab/embedded/conf/nginx.conf
+修改完配置，重启：gitlab-ctrl reconfigure
+访问地址：http://x.x.x.x   默认用户：root 
+
+
+缺省安装后的一些重要信息
+程序目录在：/opt/gitlab
+文件数据在：/var/opt/gitlab
+git repo目录在：/var/opt/gitlab/git-data
+上传图片目录在：/var/opt/gitlab/uploads
+使用的本地模式运行的postgresql数据，会随gitlab启动时候自动运行
+使用本地运行的redis服务，会随gitlab启动时候自动运行
+缺省利用本地邮局，自动投递给其他服务器，如果是非互联网ip，可以修改为本地smtp方式
+修改ssh服务的git账号入口，git账号的登录shell处理为gitlab-shell
+自带nginx，缺省会在所有ip地址的80端口监听请求，请求会转发给ruby进程
