@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"><link rel="icon" href="https://static.jianshukeji.com/highcharts/images/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            /* css 代码  */
+        </style>
+        <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/themes/grid-light.js"></script>
+    </head>
+    <body>
+        <div id="container" style="min-width:400px;height:400px"></div>
+        <div id="textpv" style="display: none">
+         <div id="one">4000</div>
+         <div id="two">2000</div>
+         <div id="three">8000</div>
+         <div id="four">3000</div>
+        <div id="five">5000</div>
+        <div id="six">4200</div>
+        <div id="seven">1000</div>
+        </div>
+
+
+        <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.js"></script>
+        <script>
+            $(document).ready(function () {
+                arr=[];
+                var one=parseInt($('#one').text()),
+                    two=parseInt($('#two').text()),
+                    three=parseInt($('#three').text()),
+                    four=parseInt($('#four').text()),
+                    five=parseInt($('#five').text()),
+                    six=parseInt($('#six').text()),
+                    seven=parseInt($('#seven').text());
+                arr.push(one,two,three,four,five,six,seven)
+                var chart = Highcharts.chart('container', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: '爱豆蔻PV UV 条形图'
+                },
+                subtitle: {
+                    text: '数据来源: 运维监控'
+                },
+                xAxis: {
+                    categories: ['周日','周一','周二','周三','周四','周五','周六'],
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '日pv',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' page'
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true,
+                            allowOverlap: true // 允许数据标签重叠
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 100,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                    shadow: true
+                },
+                series: [{
+                //     name: '1800 年',
+                //     data: [107, 31, 635, 203, 2]
+                // }, {
+
+                    name: 'pv 周',
+            {#        data: [133, 156, 947, 408, 6]#}
+                    data: arr
+
+                }, {
+                    name: 'uv 周',
+                    data: [973, 914, 4054, 732, 34,900,200]
+                }]
+            });
+
+
+       })
+        </script>
+    </body>
+</html>
