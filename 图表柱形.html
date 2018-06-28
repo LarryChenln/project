@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="container" style="min-width:400px;height:400px;"></div>
+<button id="button" class="autocompare">Charts</button>
+<span><input type="button" value="PV" style="background-color: green">&nbsp;&nbsp;<input type="button" value="下载数"  style="background-color: black;color: white">&nbsp;&nbsp;<input type="button" value="UV" style="background-color: powderblue">&nbsp;</span>
+
+
+<script src="https://img.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+<script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+        <script>
+            $(document).ready(function () {
+               /* arr=[];
+                var one=parseInt($('#one').text()),
+                    two=parseInt($('#two').text()),
+                    three=parseInt($('#three').text()),
+                    four=parseInt($('#four').text()),
+                    five=parseInt($('#five').text()),
+                    six=parseInt($('#six').text()),
+                    seven=parseInt($('#seven').text());
+                arr.push(one,two,three,four,five,six,seven)
+                */
+               var arr=[29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 20.4, 194.1, 95.6, 54.4]
+                var arr2=[40, 271.5, 106.4, 429.2, 14.0, 76.0, 335.6, 148.5, 20.4, 194.1, 195.6, 34.4]
+                var arr3=[410, 71.5, 606.4, 429.2, 224.0, 76.0, 135.6, 148.5, 20.4, 194.1, 95.6, 234.4]
+                $('#container').highcharts({
+                        chart: {
+                                type: 'column'
+                                //type: 'bar'
+                                //type: 'pie'
+
+                        },
+                        xAxis: {
+                                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                        },
+                        plotOptions: {
+                                series: {
+                                        allowPointSelect: true
+                                }
+                        },
+                        series: [{
+                                data: arr
+                        }, {
+                                data: arr2
+                            },{
+                                data: arr3
+                            }]
+                });
+                // the button action
+                $('#button').click(function() {
+                        var chart = $('#container').highcharts(),
+                                selectedPoints = chart.getSelectedPoints();
+                        if (chart.lbl) {
+                                chart.lbl.destroy();
+                        }
+                        chart.lbl = chart.renderer.label('You selected ' + selectedPoints.length + ' points', 100, 60)
+                                .attr({
+                                padding: 10,
+                                r: 5,
+                                fill: Highcharts.getOptions().colors[1],
+                                zIndex: 5
+                        })
+                                .css({
+                                color: 'white'
+                        })
+                                .add();
+                });
+
+
+
+
+
+
+
+
+
+});
+
+
+        </script>
+</body>
+</html>
