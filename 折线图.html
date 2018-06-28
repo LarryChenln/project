@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"><link rel="icon" href="https://static.jianshukeji.com/highcharts/images/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            /* css 代码  */
+        </style>
+        <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/themes/dark-unica.js"></script>
+    </head>
+    <body>
+        <div id="container" style="min-width:400px;height:400px"></div>
+        <script src="https://img.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                 /* arr=[];
+                var one=parseInt($('#one').text()),
+                    two=parseInt($('#two').text()),
+                    three=parseInt($('#three').text()),
+                    four=parseInt($('#four').text()),
+                    five=parseInt($('#five').text()),
+                    six=parseInt($('#six').text()),
+                    seven=parseInt($('#seven').text());
+                arr.push(one,two,three,four,five,six,seven)
+                */
+                var arr1=[6629.9, 7161.5, 5106.4, 11129.2, 1844.0, 23176.0, 9135.6, 9148.5, 2090.4, 1494.1, 6695.6, 2154.4]
+                var arr2=[540, 1271.5, 1406.4, 2429.2, 614.0, 676.0, 2335.6, 1148.5, 2540.4, 3194.1, 6195.6, 834.4]
+                var arr3=[410, 741.5, 606.4, 429.2, 224.0, 2176.0, 8135.6, 148.5, 20.4, 194.1, 995.6, 234.4]
+                var LC_list=[3.9, 9.2, 2.7, 8.5, 6.9, 15.2, 17.0, 16.6, 14.2, 19.3, 6.6, 2.8]
+                var months=['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                var chart = Highcharts.chart('container', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: '月平均访问量'
+                    },
+                    subtitle: {
+                        text: '数据来源: 运维监控'
+                    },
+                    xAxis: {
+                        categories: months
+                    },
+                    yAxis: {
+                        title: {
+                            text: 's/pbs'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                // 开启数据标签
+                                enabled: true
+                            },
+                            // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+                            enableMouseTracking: false
+                        }
+                    },
+                    series: [{
+                        /*name: '北京',
+                        data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                    }, {
+                        name: '青岛',
+                        data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 40.8]
+                    },{
+                        name: '聊城',
+                        data: LC_list
+                        */
+                        name: 'PV',
+                        data: arr1
+                    },{
+                        name: 'UV',
+                        data: arr2
+                    },{
+                        name: '下载量',
+                        data: arr3
+                    }]
+                });
+
+
+
+                });
+        </script>
+    </body>
+</html>
