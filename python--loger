@@ -1,0 +1,40 @@
+from subprocess import PIPE,Popen
+
+# cmds='ifconfig'
+#
+# p=Popen(cmds,stdout=PIPE,stderr=PIPE,shell=True)
+# data=p.communicate()
+# print(data)
+
+
+def loger():
+    import logging, os, sys, time
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    myTime = time.strftime('%Y%m%d%H', time.localtime(time.time()))
+    path = os.path.dirname(os.getcwd()) + "/logs/"
+    log_name = path + myTime + '.log'
+    logfile = log_name
+    # 定义file  log日志级别
+    fh = logging.FileHandler(logfile, mode='a')
+    fh.setLevel(logging.DEBUG)
+    # 定义handler输出格式
+    formatter = logging.Formatter("%(asctime)s - %(filename)s -[line:%(lineno)d] - %(levelno)s - %(message)s")
+    fh.setFormatter(formatter)
+    # 将logger添加到 handler
+    logger.addHandler(fh)
+    return logger
+
+
+logger=loger()
+
+#日志
+logger.error('bad segament')
+lines='nice to see you robin and larry'
+logger.info('{0}'.format(lines))
+
+#tracing追踪错误到文件 True ,False不追踪
+try:
+    open('222l.log','r')
+except Exception as e:
+    logger.error('error :', exc_info=False)
