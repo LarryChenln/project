@@ -5,6 +5,16 @@
     <title>Title</title>
 </head>
 <body>
+    <div id="client-num">
+        <li>300</li>
+        <li>200</li>
+        <li>230</li>
+        <li>190</li>
+        <li>400</li>
+    </div>
+    #{% for element in dada %}
+    #    <li>{{element}}</li>
+    #{% endfor %}
 <div id="container" style="min-width:400px;height:400px;"></div>
 <button id="button" class="autocompare">Charts</button>
 <span><input type="button" value="PV" style="background-color: green">&nbsp;&nbsp;<input type="button" value="下载数"  style="background-color: black;color: white">&nbsp;&nbsp;<input type="button" value="UV" style="background-color: powderblue">&nbsp;</span>
@@ -24,6 +34,19 @@
                     seven=parseInt($('#seven').text());
                 arr.push(one,two,three,four,five,six,seven)
                 */
+                
+               var clientArr=[];
+               $.each($('#client-num li'),function(k,v){
+                   /*clientNumArr.push($(this).text())    Or  */
+                   clientArr.push($(v).text())
+               })
+                var clientNumArr=[];
+                for (var ele,i=0;i<clientArr.length;i++){
+                   ele=parseInt(clientArr[i])
+                    clientNumArr.push(ele)
+                }
+                console.log(clientNumArr)
+                
                var arr=[29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 20.4, 194.1, 95.6, 54.4]
                 var arr2=[40, 271.5, 106.4, 429.2, 14.0, 76.0, 335.6, 148.5, 20.4, 194.1, 195.6, 34.4]
                 var arr3=[410, 71.5, 606.4, 429.2, 224.0, 76.0, 135.6, 148.5, 20.4, 194.1, 95.6, 234.4]
