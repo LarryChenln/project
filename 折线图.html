@@ -13,6 +13,13 @@
         <script src="https://img.hcharts.cn/highcharts/themes/dark-unica.js"></script>
     </head>
     <body>
+        <div id="client-num">
+            <li>300</li>
+            <li>200</li>
+            <li>230</li>
+            <li>190</li>
+            <li>400</li>
+        </div>
         <div id="container" style="min-width:400px;height:400px"></div>
         <script src="https://img.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
         <script>
@@ -27,6 +34,19 @@
                     seven=parseInt($('#seven').text());
                 arr.push(one,two,three,four,five,six,seven)
                 */
+                //批量获取div  li 元素值
+               var clientArr=[];
+               $.each($('#client-num li'),function(k,v){
+                   /*clientNumArr.push($(this).text())    Or  */
+                   clientArr.push($(v).text())
+               })
+                var clientNumArr=[];
+                for (var ele,i=0;i<clientArr.length;i++){
+                   ele=parseInt(clientArr[i])
+                    clientNumArr.push(ele)
+                }
+                console.log(clientNumArr)
+                
                 var arr1=[6629.9, 7161.5, 5106.4, 11129.2, 1844.0, 23176.0, 9135.6, 9148.5, 2090.4, 1494.1, 6695.6, 2154.4]
                 var arr2=[540, 1271.5, 1406.4, 2429.2, 614.0, 676.0, 2335.6, 1148.5, 2540.4, 3194.1, 6195.6, 834.4]
                 var arr3=[410, 741.5, 606.4, 429.2, 224.0, 2176.0, 8135.6, 148.5, 20.4, 194.1, 995.6, 234.4]
