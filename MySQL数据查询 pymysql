@@ -1,0 +1,27 @@
+config={
+    'host':'172.17.0.2',
+    'port':3306,
+    "user":"test",
+    "password":"123456",
+    "database":"djangostart",
+    "charset":"utf8"
+
+}
+
+import pymysql
+conn=pymysql.connect(**config)
+cur=conn.cursor()
+
+select_sql="select * from user_message "
+resultNum=cur.execute(select_sql)
+result=cur.fetchall()
+# print(result[0][1])
+data={'172.172.100.192':
+    {'3306':
+        {
+}}}
+# print(resultNum)
+for i in range(resultNum):
+    data['172.172.100.192']['3306'][i]=result[i][1]
+
+print(data)
