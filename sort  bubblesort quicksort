@@ -1,0 +1,63 @@
+## 去重
+def setFunc(list):
+    list.sort()
+    last=list[-1]
+    for i in range(len(list)-2,-1,-1):
+        if last == list[i]:
+            del list[i]
+        else:
+            last = list[i]
+    return list
+
+
+#快排 Python
+nums=[2,3,1,2,3,5,6,9,2,3,7]
+def QuickSort(nums):
+    if len(nums) <= 1:
+        return nums
+    less=[]
+    grater=[]
+    basenum=nums.pop()
+    print('this lucy num : ',basenum)
+    for x in nums:
+        if x < basenum:
+            less.append(x)
+        else:
+            grater.append(x)
+    return QuickSort(grater)+[basenum]+QuickSort(less)
+    # return QuickSort(less)+[basenum]+QuickSort(grater)
+
+print(QuickSort(nums))
+
+
+#冒泡排序:每次比较相邻的两个元素如果位置错误就进行互换
+def bubbleSort(nums):
+    for i in range(len(nums)-1):
+        for j in range(len(nums)-1-i):
+            if nums[j] > nums[j+1]:
+                nums[j],nums[j+1]=nums[j+1],nums[j]
+    return nums
+nn=[4,2,1,6,4,8,9,3,2,1,9,0]
+aa=bubbleSort(nn)
+print('--',aa)
+
+
+#斐波那契数列
+def Fic(num):
+    ## example list
+    # count=0
+    # list=[1,1]
+    # while count < num:
+    #     list.append(list[-1]+list[-2])
+    #     count+=1
+    # return list
+    ## yield
+    a,b,count=1,1,0
+    while count < num:
+        a,b=b+a,a
+        yield a
+        count+=1
+
+print(Fic(3))
+print([x for x in Fic(10)])
+
