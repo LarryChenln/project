@@ -61,3 +61,38 @@ def Fic(num):
 print(Fic(3))
 print([x for x in Fic(10)])
 
+
+# ##反转字符串
+# s='hello'
+# def reverseFunc(string):
+#     str=[x for x in ''.join(string)]
+#     s=''
+#     for i in range(len(str)-1,-1,-1):
+#         s+=str[i]
+#     return '"'+s+'"'
+#
+# a=reverseFunc(s)
+# print(a)
+
+
+### 颠倒整数
+# a=123
+# b=-123
+# c=120
+# def reverseInt(num):
+#     s=str(num)
+#     sli=[x for x in ''.join(s)]
+#     if '-' in sli:
+#         n='-'
+#         sli.remove('-')
+#     else:
+#         n=''
+#     for i in range(len(sli)-1,-1,-1):
+#         n+=sli[i]
+#     n=int(n)
+#     return n
+# 
+# obj=reverseInt(a)
+# obj2=reverseInt(b)
+# obj3=reverseInt(c)
+# print(obj,obj2,obj3)
