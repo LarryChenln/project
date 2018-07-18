@@ -96,3 +96,31 @@ print([x for x in Fic(10)])
 # obj2=reverseInt(b)
 # obj3=reverseInt(c)
 # print(obj,obj2,obj3)
+
+
+##二分查找
+def binarySearch(luckNum,nums):
+    nums.sort()
+    print(nums)
+    high=len(nums)
+    low=0
+    while low <= high:
+        mid=int((low + high) / 2)
+        print('mid is :',mid)
+        if int(luckNum) == int(nums[mid]):
+            return mid
+        elif int(nums[mid]) > int(luckNum):
+            high = mid - 1
+        else:
+            low = mid + 1
+    return -1
+a=input('pls input a num: ')
+num=[2,4,1,7,5,9,6,3,0,8,29,31,9,37,88,7,93,28,65,39,85,69,8,2,1]
+try:
+    obj = binarySearch(a, num)
+    if obj != -1:
+        print('luck num is ',str(a)+' index is '+str(obj))
+    else:
+        print('您输入的数字不在数组里')
+except:
+    pass
