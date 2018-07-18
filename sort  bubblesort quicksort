@@ -124,3 +124,26 @@ try:
         print('您输入的数字不在数组里')
 except:
     pass
+    
+    
+    
+    
+###算术题打印
+def Func99(nums,sympol='+'):
+    import random,time
+    c=0
+    nr=''
+    for i in range(nums):
+        time.sleep(0.1)
+        choice1 = random.randrange(1, 9)
+        choice2 = random.randrange(10,99)
+        if i % 5 == 0 and i != 0:
+            nr='\n\n'
+            print(choice1, sympol, choice2, '=       '+str(nr),end=' ')
+        else:
+            nr=''
+            print(choice1, sympol, choice2, '=       ' + str(nr), end=' ')
+        c+=1
+
+obj=Func99(50,'+')
+print(obj)
