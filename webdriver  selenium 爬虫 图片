@@ -1,0 +1,86 @@
+##使用webdriver selenium 下载煎蛋图片
+import  requests,json,re
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from pyquery import PyQuery as pq
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
+import time
+import os,sys
+from urllib import request
+
+header={
+'Content-type':'application/x-www-form-urlencoded',
+'Origin':'https://music.163.com',
+'Referer':'https://music.163.com/',
+'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+}
+
+
+
+jd_url='http://jandan.net/ooxx/page-%d#comments'
+def get_jd_pic_url(url):
+    browser = webdriver.Chrome()
+    ###如果网络有延迟，请求等待时间10秒，默认等待0秒
+    browser.implicitly_wait(300)
+    ###cookie处理
+    # cookie = {'name':'larry','vaule':'123456'}
+    # browser.add_cookie(cookie)
+
+    ##设置网页下载时长超时时间秒
+    browser.set_page_load_timeout(600)
+    ###截取当前页面屏幕
+    ###browser.save_screenshot('/tmp/meinv1.png')
+    browser.get(url)
+    soup = BeautifulSoup(browser.page_source, 'html.parser', from_encoding='utf-8')
+    all_data=str(soup.select("div[class='text'] p a"))
+    all_li=all_data.split()
+    patern=re.compile(r'.*href=\"(?P<picUrl>.*\.jpg).*')
+    download_dir='/tmp/download'
+    if not os.path.exists(download_dir):
+        os.mkdir(download_dir)
+    for i in all_li:
+        link = re.search(patern, i)
+        if link:
+            pic_link='http:' + link.group('picUrl')
+            print(pic_link)
+            with open(download_dir+'/jd_links.txt','a')as f:
+                f.writelines(str(pic_link)+'\n\r')
+
+    browser.close()
+
+
+
+def get_all_pic_links():
+    for i in range(1,20):
+        cur_url=jd_url % (i)
+        get_jd_pic_url(cur_url)
+        time.sleep(5)
+
+
+
+def downloadPics():
+    if not os.path.exists('/tmp/download/jd_links.txt'):
+        return False
+    pics_dir = '/tmp/download/pics/'
+    if not os.path.exists(pics_dir):
+        os.mkdir(pics_dir)
+    with open('/tmp/download/jd_links.txt','r')as f:
+        num=1
+        for link in f.readlines():
+            try:
+                if not os.path.exists(pics_dir + str(num) + '.jpg'):
+                    request.urlretrieve(url=link, filename=pics_dir + str(num) + '.jpg')
+                num += 1
+            except:
+                pass
+
+
+
+
+if __name__ == '__main__':
+    # get_all_pic_links()
+    ##同时进行浏览器间隙许加长
+    downloadPics()
