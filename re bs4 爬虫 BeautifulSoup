@@ -1,0 +1,66 @@
+import  requests,json,re
+from bs4 import BeautifulSoup
+header={
+'Content-type':'application/x-www-form-urlencoded',
+'Origin':'https://music.163.com',
+'Referer':'https://music.163.com/',
+'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+}
+qs_url='https://www.qiushibaike.com/text/page/'
+def get_qiushi(url):
+    html=requests.get(url,headers=header)
+    data=html.text
+    soup=BeautifulSoup(data,"lxml")
+    all_s=str(soup.select('div[class="content"] span'))
+    all_s=re.sub('<span>','',all_s)
+    all_s=re.sub(r'</span>','',all_s)
+    all_s=re.sub(r'<br/>','\r\n',all_s)
+    print(all_s)
+
+def main():
+    for i in range(1,2):
+        print((qs_url+str(i)+'/'))
+        get_qiushi(qs_url+str(i)+'/')
+
+if __name__ == '__main__':
+    main()
+    
+# keyword=input('Pls input song name:')
+# search_url='https://music.163.com/#/search/m/?s=%s&type=1'
+# html=requests.post(search_url %(keyword),headers=header)
+# html=html.text
+# # print(html)
+# #创建beautifu、lsoup对象
+# soup=BeautifulSoup(html,"lxml")
+
+##过滤出a标签，并且class属性是sister和id属性是link1的,由于Python中class是关键字所以下边要用class_代表class属性。
+# print (soup.find_all("a",class_="sister",id="link1"))
+##通过select标签查询
+# print(soup.select('a'))
+# print(soup.select('div'))
+# ##通过类名查找和ID名查找
+# print(soup.select('.sister'))
+# print(soup.select('#link1'))
+##属性查找,a标签并且class属性是sister的
+# print(soup.select('a[class="sister"]'))
+##p 标签下的a标签且class属性是sister的
+# print(soup.select('p a[class="sister"]'))
+# print(soup.select("div[class='text'] a"))
+#
+#   ##### for example re
+#         htmldata='''
+#         <div>
+#             <a href='.'>
+#              <p class="sister" id="link1"> 111 </p>
+#              </a>
+#         </div>
+#         '''
+#         soup=BeautifulSoup(htmldata,"lxml")
+#         #查找div标签下子标签是a的标签下的子标签是p的标签，并且class属性是sister的
+#         ele=soup.select("div a p[class='sister']")
+#         print(ele)
+#         #正则条件转义<> ，(?P<>尖括号内的变量名是匹配到的内容的变量引用,这个小括号是区间)
+#         patern=re.compile(r'\<p.*\>(?P<element>.*)\</p\>')
+#         result=re.search(patern,str(ele))
+#         #对匹配到的ele进行字符转义,取匹配到的变量区间
+#         print(result.group('element'))
