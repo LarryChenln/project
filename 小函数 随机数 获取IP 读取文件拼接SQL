@@ -62,4 +62,21 @@ if __name__ == '__main__':
     unittest.main()
     
 ###------------------------------------------------------------------------------------------
+### csv文件读取 拼接SQL
+inputFile=input('pls input a file name:')
+with open('{filename}'.format(filename=inputFile),'r')as f:
+    li=[]
+    for w in f.readlines():
+        li.append(w)
+    for i in range(len(li)):
+        word=li[i]
+        line=word.split(',')
+        name=line[0]
+        age=line[1]
+        sex=line[2]
+        city=line[3]
+        sql='insert into tb tongji values(%s,%s,%s,%s)' % (name,age,sex,city)
+        ### mysql-exec-sql
+        print(sql)
 
+###------------------------------------------------------------------------------------------
