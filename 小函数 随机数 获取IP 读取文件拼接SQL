@@ -62,6 +62,22 @@ if __name__ == '__main__':
     unittest.main()
     
 ###------------------------------------------------------------------------------------------
+import pandas as pd
+### 读取CSV文件，逗号分隔
+df=pd.read_csv('/tmp/test.csv',header=None,sep=',')
+length=len(df.values)
+for i in range(0,length):
+    ele=df.values[i]
+    name=ele[0]
+    age=ele[1]
+    sex=ele[2]
+    city=ele[3]
+    sql='insert into tb values(%s,%s,%s,%s)' % (name,age,sex,city)
+    print(sql)
+    ##cur.execute(sql)
+
+###------------------------------------------------------------------------------------------
+
 ### csv文件读取 拼接SQL
 inputFile=input('pls input a file name:')
 with open('{filename}'.format(filename=inputFile),'r')as f:
