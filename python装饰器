@@ -1,0 +1,38 @@
+# ###装饰器
+# import functools
+# def decorator(func):
+#     @functools.wraps(func)##如果没有这个 有时有些依赖函数签名的代码执行会出错
+#     def wrapper(*arv,**kv):
+#         print('start ...')
+#         func(*arv,**kv)
+#         print('stop ...')
+#     return wrapper
+#
+#
+# @decorator
+# def myPrint(name):
+#     print ('My name is %s' % (name))
+#
+# myPrint('xixi')
+
+
+##传参数的装饰器
+import functools
+def log(text):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args,**kv):
+            print('start...')
+            print(text,func.__name__) ##传参进来的text是log函数的execute字段，func.__name__是执行的函数名字
+            func(*args,**kv)
+            print('stop...')
+        return wrapper
+    return decorator
+
+
+@log('execute')
+def myprint(name):
+    print('Hi {name} now is 2019'.format(name=name))
+
+
+myprint('larry')
