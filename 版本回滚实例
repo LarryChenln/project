@@ -1,0 +1,24 @@
+####版本回滚
+#
+# import subprocess,re
+# def getJar():
+#     cmd="cd /Users/larrychen/test;ls -al *.jar|awk '{print $NF}'"
+#     p=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+#     result=p.communicate()
+#     s=result[0]
+#     s=s.decode('utf8')
+#     li=s.split('\n')
+#     li=[x for x in li if x != '']
+#     return li
+#
+#
+# def selectNum(n):
+#     li = getJar()
+#     my_jar=li[-n+-1]
+#     return my_jar
+#
+#
+# backnum=int(input('请输入要回滚的版本号：'))
+# print('即将回滚到版本：'+str(selectNum(backnum)))
+# print('\n\n')
+# print('scp ./{num} root@192.168.0.10:/www/html/{nowjar}'.format(num=selectNum(backnum),nowjar='web.jar'))
