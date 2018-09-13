@@ -1,10 +1,15 @@
 #!/usr/local/python3.6/bin/python3.6
 import os,nmap,sys
+
+red_color='\033[1;35m %s \033[0m'
+blue_color='\033[1;33;44m %s \033[0m'
+####   pip3.6 uninstall nmap   and pip3.6 install python-nmap
 scan_row=[]
 input_data=input('Pls input a host and port :')
 scan_row=input_data.split(" ")
 if len(scan_row) != 2:
-    print('Error example 192.168.0.0/24 22,80')
+    print('Usage:  192.168.0.1-240 22,80')
+    print('172.16.1.1-20 22-8080')
     sys.exit()
 hosts=scan_row[0]
 port=scan_row[1]
@@ -20,9 +25,13 @@ try:
 except:
     print('Scan error',sys.exc_info()[0])
     sys.exit(0)
+down_host_list=[]
 for host in nm.all_hosts():
     print('\n\nHost : %s (%s)' % (host,nm[host].hostname()))
-    print('State: %s ' % (nm[host].state()))
+    curStatus=nm[host].state()
+    if curStatus == str('down'):
+        print('State: \033[1;35m %s \033[0m! ' % (curStatus))
+        down_host_list.append(str(host))
     for proto in nm[host].all_protocols():
         print('----------------')
         print('Protocols : %s' % proto)
@@ -30,3 +39,9 @@ for host in nm.all_hosts():
         #lport.sort()
         for port in lport:
             print('Port : %s \t name: %s \t State : %s' % (port,nm[host][proto][port]['name'],nm[host][proto][port]['state']))
+print('\n\r'*2,'-'*20)
+if len(down_host_list) > 1:
+    for n in range(0,len(down_host_list)):
+        print(down_host_list[n] + red_color % ('  is down '))
+else:
+    print(str(down_host_list[0]) + red_color % ('  is down '))
