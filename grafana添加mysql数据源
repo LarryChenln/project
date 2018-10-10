@@ -1,0 +1,19 @@
+#### 
+
+SELECT *,now() as time
+from 
+(select fail_day_count as '发布失败(日/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') a,
+(select success_day_count as '发布成功(日/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') b,
+(select total_day_count as '发布总数(日/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') c,
+(select fail_week_count as '发布失败(周/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') d,
+(select success_week_count as '发布成功(周/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') e,
+(select total_week_count as '发布总数(周/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') f,
+(select fail_month_count as '发布失败(月/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') g,
+(select success_month_count as '发布成功(月/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') h ,
+(select total_month_count as '发布总数(月/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') i ,
+(select fail_quart_count as '发布失败(季/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') j  ,
+(select success_quart_count as '发布成功(季/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') k  ,
+(select total_quart_count as '发布总数(季/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') l  ,
+(select fail_year_count as '发布失败(年/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') m  ,
+(select success_year_count as '发布成功(年/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') n ,
+(select total_year_count as '发布总数(年/次)' from cmdb_jenkinspubstatistic where pub_jobname='car_hshcpss') o  ;
