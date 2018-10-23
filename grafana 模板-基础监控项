@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": 7877,
   "graphTooltip": 0,
-  "id": 13,
-  "iteration": 1538290945799,
+  "id": 3,
+  "iteration": 1540272593177,
   "links": [],
   "panels": [
     {
@@ -29,7 +29,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "format": "short",
       "gauge": {
         "maxValue": 20,
@@ -137,7 +137,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -272,66 +272,131 @@
       "valueName": "max"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
       "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "Zabbix",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "format": "bytes",
+      "gauge": {
+        "maxValue": null,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
       },
-      "datasource": "zabbix",
-      "decimals": 1,
-      "fontSize": "70%",
-      "format": "short",
       "gridPos": {
         "h": 5,
         "w": 4,
         "x": 8,
         "y": 0
       },
-      "hideTimeOverride": false,
-      "id": 57,
+      "id": 59,
       "interval": null,
-      "legend": {
-        "header": "",
-        "percentage": true,
-        "percentageDecimals": 1,
-        "show": false,
-        "values": true
-      },
-      "legendType": "On graph",
       "links": [],
-      "maxDataPoints": 3,
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
       "nullPointMode": "connected",
-      "pieType": "pie",
-      "repeat": null,
-      "strokeWidth": 1,
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": true,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
       "targets": [
         {
+          "alias": "Available memory",
           "application": {
-            "filter": ""
+            "name": "Memory"
           },
+          "downsampleFunction": {
+            "name": "avg",
+            "value": "avg"
+          },
+          "errors": {},
           "functions": [],
           "group": {
-            "filter": "$group"
+            "filter": "$group",
+            "isRegex": false,
+            "name": "$group",
+            "style": {},
+            "templated": true
           },
-          "hide": false,
+          "groupBy": [
+            {
+              "params": [
+                "auto"
+              ],
+              "type": "time"
+            }
+          ],
           "host": {
-            "filter": "$host"
+            "filter": "$host",
+            "isRegex": false,
+            "name": "$host",
+            "style": {},
+            "templated": true
           },
           "item": {
-            "filter": "/.*memory/"
+            "filter": "Available memory",
+            "isRegex": false,
+            "name": "Available memory",
+            "style": {}
           },
           "mode": 0,
           "options": {
-            "showDisabledItems": false,
-            "skipEmptyValues": false
+            "showDisabledItems": false
           },
           "refId": "A",
           "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
           "table": {
             "skipEmptyValues": false
           },
+          "tags": [],
           "triggers": {
             "acknowledged": 2,
             "count": true,
@@ -339,9 +404,19 @@
           }
         }
       ],
-      "title": "内存使用率",
+      "thresholds": "0,1000000000,2000000000",
+      "timeFrom": null,
+      "title": "可用内存(G)",
       "transparent": false,
-      "type": "grafana-piechart-panel",
+      "type": "singlestat",
+      "valueFontSize": "100%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
       "valueName": "current"
     },
     {
@@ -353,7 +428,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -496,7 +571,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "decimals": 1,
       "format": "dtdurations",
       "gauge": {
@@ -605,7 +680,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -706,7 +781,7 @@
       "valueName": "current"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -741,7 +816,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "editable": true,
       "error": false,
       "fill": 5,
@@ -865,7 +940,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -1027,10 +1102,11 @@
       },
       "yaxes": [
         {
+          "decimals": 2,
           "format": "short",
           "logBase": 1,
           "max": null,
-          "min": 0,
+          "min": "0",
           "show": true
         },
         {
@@ -1051,7 +1127,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "editable": true,
       "error": false,
       "fill": 5,
@@ -1241,48 +1317,35 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "zabbix",
-      "editable": true,
-      "error": false,
-      "fill": 5,
-      "grid": {},
+      "datasource": "Zabbix",
+      "fill": 1,
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 24,
         "x": 0,
         "y": 15
       },
-      "id": 52,
+      "id": 61,
       "legend": {
-        "alignAsTable": false,
-        "avg": true,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
+        "avg": false,
+        "current": false,
         "max": false,
-        "min": true,
-        "rightSide": false,
+        "min": false,
         "show": true,
-        "total": true,
-        "values": true
+        "total": false,
+        "values": false
       },
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "minSpan": 8,
       "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatDirection": "h",
-      "seriesOverrides": [
-        {
-          "alias": "/Incoming/",
-          "transform": "negative-Y"
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
+      "span": 12,
       "stack": false,
       "steppedLine": false,
       "targets": [
@@ -1290,7 +1353,6 @@
           "application": {
             "filter": "Network interfaces"
           },
-          "countTriggers": true,
           "functions": [],
           "group": {
             "filter": "$group"
@@ -1299,144 +1361,52 @@
             "filter": "$host"
           },
           "item": {
-            "filter": "Outgoing network traffic on eth0"
+            "filter": "/.*eth0/"
           },
-          "minSeverity": 3,
           "mode": 0,
           "options": {
-            "showDisabledItems": false
+            "showDisabledItems": false,
+            "skipEmptyValues": false
           },
           "refId": "A",
           "resultFormat": "time_series",
           "table": {
             "skipEmptyValues": false
           },
+          "target": "$HostName#net#if#in#bytes/iface=eth0",
+          "textEditor": false,
           "triggers": {
             "acknowledged": 2,
             "count": true,
             "minSeverity": 3
           }
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "流出",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "cumulative"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "bps",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
         },
-        {
-          "format": "short",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "zabbix",
-      "editable": true,
-      "error": false,
-      "fill": 5,
-      "grid": {},
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 22
-      },
-      "id": 53,
-      "legend": {
-        "alignAsTable": false,
-        "avg": true,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": true,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "minSpan": 8,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeatDirection": "h",
-      "seriesOverrides": [
-        {
-          "alias": "/Incoming/",
-          "transform": "negative-Y"
-        }
-      ],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
         {
           "application": {
-            "filter": "Network interfaces"
+            "filter": ""
           },
-          "countTriggers": true,
           "functions": [],
           "group": {
-            "filter": "$group"
+            "filter": ""
           },
           "host": {
-            "filter": "$host"
+            "filter": ""
           },
           "item": {
-            "filter": "Incoming network traffic on eth0"
+            "filter": ""
           },
-          "minSeverity": 3,
           "mode": 0,
           "options": {
-            "showDisabledItems": false
+            "showDisabledItems": false,
+            "skipEmptyValues": false
           },
-          "refId": "A",
+          "refId": "B",
           "resultFormat": "time_series",
-          "slaProperty": {
-            "name": "SLA",
-            "property": "sla"
-          },
           "table": {
             "skipEmptyValues": false
           },
+          "target": "$HostName#net#if#out#bytes/iface=eth0",
+          "textEditor": false,
           "triggers": {
             "acknowledged": 2,
             "count": true,
@@ -1447,14 +1417,12 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "流入",
+      "title": "流入流出",
       "tooltip": {
-        "msResolution": false,
         "shared": true,
         "sort": 0,
-        "value_type": "cumulative"
+        "value_type": "individual"
       },
-      "transparent": true,
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -1465,7 +1433,8 @@
       },
       "yaxes": [
         {
-          "format": "bps",
+          "format": "short",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1473,6 +1442,7 @@
         },
         {
           "format": "short",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1489,13 +1459,13 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "fill": 1,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 21
       },
       "id": 49,
       "legend": {
@@ -1578,7 +1548,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
@@ -1601,14 +1571,14 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "zabbix",
+      "datasource": "Zabbix",
       "decimals": 3,
       "fill": 1,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 28
       },
       "id": 51,
       "legend": {
@@ -1686,6 +1656,7 @@
       },
       "yaxes": [
         {
+          "decimals": 3,
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1708,7 +1679,7 @@
       }
     }
   ],
-  "refresh": "1m",
+  "refresh": "5m",
   "revision": 1,
   "schemaVersion": 16,
   "style": "dark",
@@ -1725,7 +1696,7 @@
           "text": "all_hosts",
           "value": "all_hosts"
         },
-        "datasource": "zabbix",
+        "datasource": "Zabbix",
         "hide": 0,
         "includeAll": false,
         "label": "Group",
@@ -1749,10 +1720,11 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "服务器A 192.168.0.2",
-          "value": "服务器A 192.168.0.2"
+          "tags": [],
+          "text": "C端应用-代理人前端-172.17.137.1",
+          "value": "C端应用-代理人前端-172.17.137.1"
         },
-        "datasource": "zabbix",
+        "datasource": "Zabbix",
         "hide": 0,
         "includeAll": false,
         "label": "Host",
@@ -1779,7 +1751,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "zabbix",
+        "datasource": "Zabbix",
         "hide": 0,
         "hideLabel": false,
         "includeAll": true,
@@ -1803,7 +1775,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1834,5 +1806,5 @@
   "timezone": "browser",
   "title": "服务器-基础-监控项",
   "uid": "Bl2_wJ4mz",
-  "version": 45
+  "version": 11
 }
