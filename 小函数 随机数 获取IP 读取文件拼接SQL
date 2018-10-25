@@ -116,3 +116,34 @@ echo -e "\033[44;37m 蓝底白字 \033[0m"
 echo -e "\033[45;37m 紫底白字 \033[0m"
 echo -e "\033[46;37m 天蓝底白字 \033[0m"
 echo -e "\033[47;30m 白底黑字 \033[0m"
+
+###------------------------------------------------------------------------------------------
+#### IP 及端口存活探测
+
+import wget
+
+red_font="\033[31m %s \033[0m"
+green_font="\033[32m %s \033[0m"
+data={
+    'zabbix_3306_status':'172.30.16.91:3306',
+    'zabbix_80_status':'172.30.16.91:80'
+}
+
+
+def exec(cmd):
+    from subprocess import PIPE, Popen
+    p = Popen(cmd, stderr=PIPE, stdout=PIPE, shell=True)
+    result = p.communicate()
+    return result
+
+
+for k,v in data.items():
+    cmd = 'wget {url} >/dev/null'.format(url=v)
+    obj = exec(cmd)
+    obj=obj[1].decode('utf8')
+    if "failed: Connection refused" in obj:
+        print(k,red_font % ' down')
+    else:
+        print(k,green_font % ' up')
+###------------------------------------------------------------------------------------------
+
