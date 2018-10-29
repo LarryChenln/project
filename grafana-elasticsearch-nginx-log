@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 21,
-  "iteration": 1540272911903,
+  "id": 26,
+  "iteration": 1540803409856,
   "links": [],
   "panels": [
     {
@@ -32,7 +32,7 @@
       "grid": {},
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 16,
         "x": 0,
         "y": 0
       },
@@ -155,6 +155,82 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "columns": [],
+      "datasource": "Online-NGINX-LOG",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "hideTimeOverride": false,
+      "id": 39,
+      "isNew": true,
+      "links": [],
+      "pageSize": 50,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": null,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "status.keyword",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "metrics": [
+            {
+              "field": "count",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "count"
+            }
+          ],
+          "query": "domain_name:$dm",
+          "refId": "B",
+          "timeField": "@timestamp"
+        }
+      ],
+      "timeFrom": "1d",
+      "title": "$dm  ALL状态码 （日）",
+      "transform": "table",
+      "type": "table"
     },
     {
       "aliasColors": {
@@ -472,8 +548,8 @@
           "value": "path"
         },
         {
-          "text": "timestamp",
-          "value": "timestamp"
+          "text": "@timestamp",
+          "value": "@timestamp"
         }
       ],
       "datasource": "Online-NGINX-LOG",
@@ -493,7 +569,7 @@
       "scroll": true,
       "showHeader": true,
       "sort": {
-        "col": 6,
+        "col": null,
         "desc": false
       },
       "styles": [
@@ -518,7 +594,7 @@
               "type": "raw_document"
             }
           ],
-          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "query": "domain_name:$dm AND status:$status AND server_ip:\"172.17.136.195\"",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -541,9 +617,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "webank.huashenghaoche.com",
-          "value": "webank.huashenghaoche.com"
+          "tags": [],
+          "text": "m.huashenghaoche.com + mdm.huashenghaoche.com",
+          "value": [
+            "m.huashenghaoche.com",
+            "mdm.huashenghaoche.com"
+          ]
         },
         "datasource": "Online-NGINX-LOG",
         "hide": 0,
@@ -553,29 +632,6 @@
         "name": "dm",
         "options": [],
         "query": "{\"find\": \"terms\", \"field\": \"domain_name.keyword\"}",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "text": "172.30.5.29",
-          "value": "172.30.5.29"
-        },
-        "datasource": "Online-NGINX-LOG",
-        "hide": 0,
-        "includeAll": false,
-        "label": "服务器IP",
-        "multi": false,
-        "name": "dh",
-        "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"server_ip.keyword\", \"query\": \"domain_name:$dm\"}",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -757,5 +813,5 @@
   "timezone": "browser",
   "title": "hshc_nginx_log",
   "uid": "G7SNuLJiZwP",
-  "version": 23
+  "version": 8
 }
