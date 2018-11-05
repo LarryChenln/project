@@ -1,0 +1,464 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 24,
+  "iteration": 1541409207923,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "mysql-cmdb",
+      "decimals": 0,
+      "fontSize": "80%",
+      "format": "short",
+      "gridPos": {
+        "h": 12,
+        "w": 10,
+        "x": 0,
+        "y": 0
+      },
+      "id": 23,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "sort": "total",
+        "sortDesc": true,
+        "values": true
+      },
+      "legendType": "Under graph",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": 1,
+      "targets": [
+        {
+          "alias": "",
+          "application": {
+            "filter": ""
+          },
+          "format": "time_series",
+          "functions": [],
+          "group": {
+            "filter": ""
+          },
+          "host": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "mode": 0,
+          "options": {
+            "showDisabledItems": false,
+            "skipEmptyValues": false
+          },
+          "rawSql": "SELECT *,now() as time\nfrom \n(select pub_jobname,count(pub_jobname) from cmdb_jenkinspub where pub_env=\"线上环境\" and pub_date>DATE_SUB(CURDATE(), INTERVAL 1 $mydate) group by pub_jobname) aba;\n",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "table": {
+            "skipEmptyValues": false
+          },
+          "triggers": {
+            "acknowledged": 2,
+            "count": true,
+            "minSeverity": 3
+          }
+        }
+      ],
+      "title": "线上环境  发版TOP  ($mydate)",
+      "transparent": false,
+      "type": "grafana-piechart-panel",
+      "valueName": "total"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 12,
+        "w": 14,
+        "x": 10,
+        "y": 0
+      },
+      "id": 27,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "select t.应用名 ,\n    MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,\n    MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,\n    MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,\n    MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    \n    sum(cnt) TOTAL\nfrom \n(\nSELECT\n   pub_jobname  AS '应用名',\n   pub_status AS pub_status,\n   count(pub_id) AS cnt\n  FROM\n   cmdb_jenkinspub\n  WHERE\n   pub_env = \"线上环境\"\n  AND pub_date > DATE_SUB(CURDATE(), INTERVAL 1 $mydate)\n  GROUP BY\n   pub_jobname,pub_status\n   ) t\n   group by t.应用名;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "各应用发版状态 详情 （$mydate）",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 24,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 3,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "SELECT *\nfrom \n(select pub_jobname as '应用名',pub_status as '发布状态',pub_description as '描述',pub_date as '发布时间' from cmdb_jenkinspub where pub_env=\"线上环境\" AND pub_status=\"$status\") aba;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "发版状态 $status 详情",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 20,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 3,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "SELECT *\nfrom \n(select pub_jobname as '应用名',pub_status as '发布状态',pub_description as '描述',pub_date as '发布时间' from cmdb_jenkinspub where pub_env=\"线上环境\" AND pub_jobname=\"$pubjobname\") aba;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "应用$pubjobname发布详情",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "mysql-cmdb",
+      "decimals": 0,
+      "fontSize": "80%",
+      "format": "short",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 34
+      },
+      "id": 14,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "values": true
+      },
+      "legendType": "Right side",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": 1,
+      "targets": [
+        {
+          "alias": "",
+          "application": {
+            "filter": ""
+          },
+          "format": "time_series",
+          "functions": [],
+          "group": {
+            "filter": ""
+          },
+          "host": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "mode": 0,
+          "options": {
+            "showDisabledItems": false,
+            "skipEmptyValues": false
+          },
+          "rawSql": "SELECT *,now() as time\nfrom \n(select count(pub_id) as 'UNSTABLE(次)' from cmdb_jenkinspub where pub_env=\"线上环境\"  AND pub_status=\"UNSTABLE\") abar,\n(select count(pub_id) as 'FAILURE(次)' from cmdb_jenkinspub where pub_env=\"线上环境\" AND  pub_status=\"FAILURE\" ) abbr,\n(select count(pub_id) as 'ABORTED(次)' from cmdb_jenkinspub where pub_env=\"线上环境\" AND pub_status=\"ABORTED\" ) abcr,\n(select count(pub_id) as 'SUCCESS(次)' from cmdb_jenkinspub where pub_env=\"线上环境\" AND pub_status=\"SUCCESS\") abdr;\n",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "table": {
+            "skipEmptyValues": false
+          },
+          "triggers": {
+            "acknowledged": 2,
+            "count": true,
+            "minSeverity": 3
+          }
+        }
+      ],
+      "title": "平台发布总数",
+      "transparent": false,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    }
+  ],
+  "refresh": "5m",
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "fin-erp-prod",
+          "value": "fin-erp-prod"
+        },
+        "datasource": "mysql-cmdb",
+        "hide": 0,
+        "includeAll": false,
+        "label": "应用名",
+        "multi": false,
+        "name": "pubjobname",
+        "options": [],
+        "query": "select DISTINCT pub_jobname  from cmdb_jenkinspub;",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "SUCCESS",
+          "value": "SUCCESS"
+        },
+        "datasource": "mysql-cmdb",
+        "hide": 0,
+        "includeAll": false,
+        "label": "状态",
+        "multi": false,
+        "name": "status",
+        "options": [],
+        "query": "select DISTINCT pub_status  from cmdb_jenkinspub;",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "WEEK",
+          "value": "WEEK"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "日期",
+        "multi": false,
+        "name": "mydate",
+        "options": [
+          {
+            "selected": false,
+            "text": "DAY",
+            "value": "DAY"
+          },
+          {
+            "selected": true,
+            "text": "WEEK",
+            "value": "WEEK"
+          },
+          {
+            "selected": false,
+            "text": "MONTH",
+            "value": "MONTH"
+          },
+          {
+            "selected": false,
+            "text": "YEAR",
+            "value": "YEAR"
+          }
+        ],
+        "query": "DAY,WEEK,MONTH,YEAR",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now/d",
+    "to": "now/d"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "utc",
+  "title": "线上环境-版本发布状态",
+  "uid": "Dckcm-xiK",
+  "version": 29
+}
