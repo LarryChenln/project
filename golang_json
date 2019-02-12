@@ -1,0 +1,58 @@
+package main
+
+//  conv json to struct
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type person2 struct {
+	Firstname string
+	Lastname string
+	Age int
+}
+
+func main() {
+	var ss = `{"Firstname":"Chen","Lastname":"Larry","Age":22}`
+	var p6 person2
+	fmt.Println("\n----\n",ss,"\n",json2struct(ss,p6))
+	var mydata = json2struct(ss,p6)
+	fmt.Println("My name is ",mydata.Lastname+mydata.Firstname)
+}
+
+func json2struct(s string,p person2)(person2){
+	json.Unmarshal([]byte(s),&p)
+	return p
+}
+
+
+
+
+
+
+
+/*
+// conv to json
+type person3 struct {
+	Fname string
+	Lname string
+	age int
+}
+
+func main(){
+	var p1 = person3{
+		"xixi",
+		"CCY",
+		22,
+	}
+	fmt.Println(jsonstr(p1))
+	fmt.Println(p1)
+
+}
+
+
+func jsonstr(p person3) string{
+	bs,_ := json.Marshal(p)
+	return string(bs)
+}
+*/
