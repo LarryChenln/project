@@ -1,23 +1,32 @@
 
-//golang get md5 sha
-
-func main() {
-	fmt.Printf("%x",getmd5("/Users/larrychen/test2.go"))
-}
-
+//golang get md5 sha for file
 func getmd5(filename string)string{
-	file,err := os.Open(filename)
-	if err != nil{
-		os.Exit(-1)
-	}else {
-		md5h := md5.New()
-		io.Copy(md5h,file)
-		result := md5h.Sum([]byte(""))
-		return string(result)
-	}
-
-	return ""
+	file,_ := os.Open(filename)
+	defer file.Close()
+	h := md5.New()
+	io.Copy(h,file)
+	return fmt.Sprintf("%x",h.Sum([]byte("")))
 }
+
+
+
+
+// string md5sum
+func main() {
+
+	var data = "hello world"
+	fmt.Println(getmd5(data))
+}
+// get md5 for strings
+func getmd5(data string)string{
+	h:= md5.New()
+	//h:=sha256.New()
+	io.WriteString(h,data)
+	return fmt.Sprintf("%x",h.Sum([]byte("")))
+}
+
+
+
 
 
 
