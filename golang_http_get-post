@@ -1,0 +1,34 @@
+/* //go get
+	var URL = "http://172.16.1.11:8000/get_apptree/?env=%E7%BA%BF%E4%B8%8A%E7%8E%AF%E5%A2%83"
+	res,err := http.Get(URL)
+	if err != nil{
+		log.Fatal(err)
+	}
+	result,err := ioutil.ReadAll(res.Body)
+	defer res.Body.Close()
+	if err != nil{
+		log.Fatal(err)
+	}
+	fmt.Println(string(result))
+	*/
+
+	
+	
+	/*// go postform
+	URL := "https://www.baidu.com/"
+	PostValue := url.Values{
+		"name":{"larry"},
+		"env":{"test"},
+	}
+	resp,err := http.PostForm(URL,PostValue)
+	if err != nil{
+		log.Fatal(err)
+	}
+	result,err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	if err != nil{
+		log.Fatal(err)
+	}
+	fmt.Println(string(result))
+
+	*/
