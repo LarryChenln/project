@@ -11,6 +11,23 @@ func getmd5(filename string)string{
 
 
 
+//获取100内的随机数
+func getRandomNum(n int64)(*big.Int){
+	max := big.NewInt(n)
+	num,err := rand.Int(rand.Reader,max)
+	if err == nil{
+		return num
+	}else {
+		os.Exit(-1)
+	}
+	return num
+}
+
+
+
+
+
+
 // string md5sum
 func main() {
 
