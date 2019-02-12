@@ -10,21 +10,35 @@ func getmd5(filename string)string{
 
 
 
+-------------------------------------------------------
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
-//获取100内的随机数
-func getRandomNum(n int64)(*big.Int){
-	max := big.NewInt(n)
-	num,err := rand.Int(rand.Reader,max)
-	if err == nil{
-		return num
-	}else {
-		os.Exit(-1)
+func main() {
+	//获取100内的随机数
+	fmt.Println(rad.Intn(99)+1)
+
+	//获取8位随机密码
+	fmt.Println(getRandomPass(12))
+}
+
+var rad = rand.New(rand.NewSource(time.Now().Unix()))
+var all_strs = "abcdefghihdABCEDETGASJHK1234567890!@#$%^&&*()"
+
+func getRandomPass(n int)string{
+	passwd :=""
+	for i:=0;i<=n;i++{
+		passwd+=string(all_strs[rad.Intn(len(all_strs)-1)+1])
 	}
-	return num
+	return passwd
 }
 
 
 
+-------------------------------------------------------
 
 
 
