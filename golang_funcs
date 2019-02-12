@@ -1,0 +1,44 @@
+
+//golang get md5 sha
+func main() {
+	fmt.Printf("%x",getmd5("/Users/larrychen/test2.go"))
+}
+
+
+func getmd5(filename string)(string){
+	file,err := os.Open(filename)
+	if err == nil{
+		md5h := md5.New()
+		io.Copy(md5h,file)
+		result := md5h.Sum([]byte(""))
+		return string(result)
+	}
+	return ""
+}
+
+
+
+
+
+
+// golang get random num
+func RandStringBytes(n int) string{
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+b := make([]byte,n)
+for num := range b{
+b[num] = letterBytes[rand.Intn(len(letterBytes))]
+}
+return string(b)
+}
+
+
+
+
+// exec system cmd
+func myexec(cmdline string) string{
+out, err := exec.Command("bash", "-c", cmdline).Output()
+if err != nil {
+fmt.Printf("Failed to execute command: %s", cmdline)
+}
+return string(out)
+}
