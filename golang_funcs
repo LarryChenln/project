@@ -8,6 +8,20 @@ func getmd5(filename string)string{
 	return fmt.Sprintf("%x",h.Sum([]byte("")))
 }
 
+-------------------------------------------------------
+// exec cmd return string
+myslice := []string{}
+	var result = myexec2("ls -ld /tmp/*")
+	//fmt.Println(result)
+	fmt.Printf("%T",result)
+	sli := strings.Split(result,"\n")
+	for i:=0;i<=len(sli)-1;i++{
+		last_ele := strings.Split(sli[i]," ")
+		filename := last_ele[len(last_ele)-1]
+		myslice = append(myslice,filename)
+	}
+	
+	fmt.Println(myslice)
 
 -------------------------------------------------------
 //每60s执行打印字符
@@ -81,8 +95,76 @@ func GetCurrentPath()string{
 	return string(path)
 }
 
+------------------------------------------------
+//读取并分析文件内容
+var my_map = make(map[string]float64)
+func readfile(filename string) string{
+
+inputfile,err := os.Open(filename)
+if err != nil{
+log.Fatal(err)
+}
+defer inputfile.Close()
+fileReader := bufio.NewReader(inputfile)
+
+//p := regexp.MustCompile(`^([w_]+)\{([w]+)=([w]+)\}\ ([\d]{1})$`)
+for{
+inputstring,err := fileReader.ReadString('\n')
+//time.Sleep(time.Microsecond * 500000)
+if indexnu := strings.IndexAny(inputstring,"#");indexnu != 0{
+paraa := strings.Split(inputstring,",} ")
+if len(paraa) == 1{
+if _,ok := Contain(strings.Split(paraa[0]," ")[0],my_item_list);ok == nil{
+split_value := strings.TrimRight(strings.Split(paraa[0]," ")[1],"\n")
+my_value,_ := strconv.ParseFloat(split_value,64)
+my_map[strings.Split(paraa[0]," ")[0]]=my_value
+}
+}else {
+if _,ok := Contain(paraa[0],my_item_list);ok == nil{
+ss := paraa[0]
+ss = strings.Replace(ss,"=","_",2)
+ss = strings.Replace(ss,"{","_",2)
+ss = strings.Replace(ss," ","_",2)
+ss = strings.Replace(ss,"\"","_",1)
+ss = strings.TrimRight(ss,"\"")
+my_v,_ := strconv.ParseFloat(strings.TrimRight(paraa[1],"\n"),64)
+my_map[ss] = my_v
+}
+}
+
+}
+
+if err == io.EOF{
+return ""
+}
+
+}
+
+}
 
 
+
+
+------------------------------------------------
+//判断obj是否存在
+func Contain(obj interface{}, target interface{}) (bool, error) {
+targetValue := reflect.ValueOf(target)
+switch reflect.TypeOf(target).Kind() {
+case reflect.Slice, reflect.Array:
+for i := 0; i < targetValue.Len(); i++ {
+if targetValue.Index(i).Interface() == obj {
+return true, nil
+}
+}
+case reflect.Map:
+if targetValue.MapIndex(reflect.ValueOf(obj)).IsValid() {
+return true, nil
+}
+}
+
+return false, errors.New("not in array")
+}
+------------------------------------------------
 
 // golang get random num
 func RandStringBytes(n int) string{
