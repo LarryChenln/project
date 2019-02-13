@@ -9,6 +9,16 @@ func getmd5(filename string)string{
 }
 
 
+-------------------------------------------------------
+//每60s执行打印字符
+	ticker:=time.NewTicker(time.Second*60)
+	go func() {
+		for _=range ticker.C {
+		println("test")
+	}
+	}()
+	time.Sleep(time.Minute)
+
 
 -------------------------------------------------------
 import (
