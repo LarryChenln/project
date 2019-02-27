@@ -147,3 +147,37 @@ for k,v in data.items():
         print(k,green_font % ' up')
 ###------------------------------------------------------------------------------------------
 
+
+
+from openpyxl import load_workbook
+import re
+XLSX_FIlE = "/Users/l.xlsx"
+
+workbook = load_workbook(XLSX_FIlE)
+# booksheet = workbook.active                #获取当前活跃的sheet,默认是第一个sheet
+sheets = workbook.get_sheet_names()  # 从名称获取sheet
+booksheet = workbook.get_sheet_by_name(sheets[0]) #获取sheets第1列
+rows = booksheet.rows
+# 迭代所有的行
+
+ips = []
+
+for row in rows:
+    try:
+        line = [col.value for col in row]
+        ip=line[0].split(";")[10].split("=")[1]
+        port = line[0].split(";")[9].split("=")[1]
+        ele=ip+":"+port
+        ips.append("dest " + ele)
+
+    except:
+        pass
+
+
+print(set(ips))
+print(len(set(ips)))
+with open("/Users/l/Downloads/result.log","w") as f:
+    for li in set(ips):
+        f.writelines(str(li)+"\n")
+        
+###------------------------------------------------------------------------------------------
