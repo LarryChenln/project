@@ -11,6 +11,21 @@ def get_host_ip():
     finally:
         s.close()
     return ip
+    
+    
+---------
+import socket
+def get_ip():
+    try:
+        hostname = socket.getfqdn(socket.gethostname())
+        ipaddr = socket.gethostbyname(hostname)
+    except Exception as msg:
+        print(msg)
+        ipaddr = ''
+    return ipaddr
+    
+ -----------   
+    
 ###------------------------------------------------------------------------------------------
 
 ###python3中为string.ascii_letters,而python2下则可以使用string.letters和string.ascii_letters
