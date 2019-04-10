@@ -1,0 +1,60 @@
+# _*_ coding:utf-8 _*_
+__author__ = 'larry'
+__date__ = '2019/4/10 1:08 PM'
+
+
+import threading
+from subprocess import PIPE, Popen
+from time import ctime,sleep
+# targetIP = '172.30.16.1'
+# commands = 'ping %s -c 10 -s 64  -q' % targetIP
+
+targetIPs = ['172.30.5.224','172.30.5.227','172.30.16.91','172.30.16.101','172.30.16.244','172.30.16.160','172.30.16.161','172.30.16.162']
+
+threads = []
+commands = 'ping %s -c 3 -s 64  -q'
+
+
+
+def pingexec(cmd):
+    '''
+        键名：
+             loss_rate
+             min_time_ms
+             avg_time_ms
+             max_time_ms
+        值;int类型
+
+    '''
+    d={}
+    p = Popen(cmd, stderr=PIPE, stdout=PIPE, shell=True)
+    result = p.communicate()
+    # print(result)
+    if len(result) >= 1:
+        a = result[0].decode('utf8').split()
+        print(a)
+        if a[16] == str('received,') and a[21] == 'min/avg/max/stddev':
+            rate_value=str(a[17]).split('%')[0]
+            d['loss_rate']=float(rate_value)
+            eles=a[23]
+            eles=eles.split('/')
+            # print(eles)
+            d['min_time_ms']=float(eles[0])
+            d['avg_time_ms'] = float(eles[1])
+            d['max_time_ms'] = float(eles[2])
+    print(d)
+    return d
+
+
+for ip in range(len(targetIPs)):
+    ele = str("t"+str(ip))
+    ele = threading.Thread(target=pingexec,args=(commands % targetIPs[ip],))
+    threads.append(ele)
+
+if __name__ == '__main__':
+    for t in threads:
+        t.setDaemon(True)
+        t.start()
+        # sleep(2)
+    t.join()
+    print( "all over %s" %ctime())
