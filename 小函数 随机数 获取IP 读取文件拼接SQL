@@ -1,3 +1,4 @@
+
 ###利用 UDP 协议来实现的，生成一个UDP包，把自己的 IP 放如到 UDP 协议头中，然后从UDP包中获取本机的IP。
 ###这个方法并不会真实的向外部发包，所以用抓包工具是看不到的
 
@@ -196,3 +197,19 @@ with open("/Users/l/Downloads/result.log","w") as f:
         f.writelines(str(li)+"\n")
         
 ###------------------------------------------------------------------------------------------
+#打印 函数执行的详细信息
+import pysnooper
+
+
+# @pysnooper.snoop('/tmp/pysnoop.log') OR
+@pysnooper.snoop()
+def int2str(num):
+    # print(num)
+    num = num * 3
+    return str(num)
+
+print(int2str(2))
+
+###------------------------------------------------------------------------------------------
+
+
