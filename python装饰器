@@ -36,3 +36,45 @@ def myprint(name):
 
 
 myprint('larry')
+
+
+
+------------------------------------------
+## 装饰器
+
+def outer(func):
+    def inner():
+        print('认证成功')
+        result = func()
+        print('日志记录成功')
+        return result
+    return inner
+
+
+@outer
+def pp():
+    print('业务部门一调用...')
+
+
+print(pp())
+
+
+##带参数的装饰器
+
+def outer(func):
+    def inner(*arg,**kv):
+        print('认证成功')
+        result = func(*arg,**kv)
+        print('日志记录成功')
+        return result
+    return inner
+
+
+@outer
+def pp(uname,age):
+    print('%s is %d' % (uname,age))
+
+
+print(pp('larry',18))
+
+--------------------------------------------------
