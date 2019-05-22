@@ -212,13 +212,15 @@ print(int2str(2))
 
 ###------------------------------------------------------------------------------------------
 ##格式化
-UserName='larry'
-Passwd='123456'
-
-url='http://www.larry.com/?name=%(uname)s&password=%(pwd)s' % {
-    'uname':UserName,
-    'pwd':Passwd
-}
-
+url='http://www.larry.com/?name={name}'.format(name='dada')
 print(url)
-## http://www.larry.com/?name=larry&password=123456
+url='http://www.larry.com/?name={name}'.format(**{'name':'Shirley'})
+print(url)
+url='http://www.larry.com/?name=%(name)s' % {'name':'karin'}
+print(url)
+
+'''print:
+http://www.larry.com/?name=dada
+http://www.larry.com/?name=Shirley
+http://www.larry.com/?name=karin
+'''
