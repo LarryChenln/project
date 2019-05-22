@@ -211,5 +211,14 @@ def int2str(num):
 print(int2str(2))
 
 ###------------------------------------------------------------------------------------------
+##格式化
+UserName='larry'
+Passwd='123456'
 
+url='http://www.larry.com/?name=%(uname)s&password=%(pwd)s' % {
+    'uname':UserName,
+    'pwd':Passwd
+}
 
+print(url)
+## http://www.larry.com/?name=larry&password=123456
