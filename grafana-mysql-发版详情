@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 24,
-  "iteration": 1540807726412,
+  "iteration": 1559805630860,
   "links": [],
   "panels": [
     {
@@ -95,6 +95,7 @@
     {
       "columns": [],
       "datasource": "mysql-cmdb",
+      "description": "Day ：当前时间~昨天现在的时间区间\n\nweek：同上",
       "editable": true,
       "error": false,
       "fontSize": "100%",
@@ -145,6 +146,7 @@
           "timeField": "@timestamp"
         }
       ],
+      "timeFrom": null,
       "title": "各应用发版状态 详情 （$mydate）",
       "transform": "table",
       "type": "table"
@@ -276,8 +278,8 @@
       "fontSize": "80%",
       "format": "short",
       "gridPos": {
-        "h": 10,
-        "w": 8,
+        "h": 9,
+        "w": 9,
         "x": 0,
         "y": 34
       },
@@ -335,9 +337,186 @@
       "transparent": false,
       "type": "grafana-piechart-panel",
       "valueName": "current"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "description": "",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 3,
+        "w": 15,
+        "x": 9,
+        "y": 34
+      },
+      "id": 28,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "select t.今天 ,\n    MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,\n    MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,\n    MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,\n    MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    \n    sum(cnt) TOTAL\nfrom \n(\nSELECT\n   \"Today\"  AS '今天',\n   pub_status AS pub_status,\n   count(pub_id) AS cnt\n  FROM\n   cmdb_jenkinspub\n  WHERE\n   pub_env = \"线上环境\"\n  AND DATEDIFF(pub_date,NOW())=0\n   ) t;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "timeFrom": null,
+      "title": "花生好车---今日---发版统计",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "description": "",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 3,
+        "w": 15,
+        "x": 9,
+        "y": 37
+      },
+      "id": 29,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "select t.昨天 ,\n    MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,\n    MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,\n    MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,\n    MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    \n    sum(cnt) TOTAL\nfrom \n(\nSELECT\n   \"     Yesterday\"  AS '昨天',\n   pub_status AS pub_status,\n   count(pub_id) AS cnt\n  FROM\n   cmdb_jenkinspub\n  WHERE\n   pub_env = \"线上环境\"\n  AND DATEDIFF(pub_date,NOW())=-1\n   ) t;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "timeFrom": null,
+      "title": "花生好车---昨天---发版统计",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "description": "",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 3,
+        "w": 15,
+        "x": 9,
+        "y": 40
+      },
+      "id": 30,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "select t.前天 ,\n    MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,\n    MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,\n    MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,\n    MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    \n    sum(cnt) TOTAL\nfrom \n(\nSELECT\n   \"before yesterday\"  AS '前天',\n   pub_status AS pub_status,\n   count(pub_id) AS cnt\n  FROM\n   cmdb_jenkinspub\n  WHERE\n   pub_env = \"线上环境\"\n  AND DATEDIFF(pub_date,NOW())=-2\n   ) t;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "timeFrom": null,
+      "title": "花生好车---前天---发版统计",
+      "transform": "table",
+      "type": "table"
     }
   ],
-  "refresh": "5m",
+  "refresh": "15m",
   "schemaVersion": 16,
   "style": "dark",
   "tags": [],
@@ -346,8 +525,9 @@
       {
         "allValue": null,
         "current": {
-          "text": "fin-erp-prod",
-          "value": "fin-erp-prod"
+          "selected": true,
+          "text": "gyl-hshcwh",
+          "value": "gyl-hshcwh"
         },
         "datasource": "mysql-cmdb",
         "hide": 0,
@@ -369,6 +549,8 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
+          "tags": [],
           "text": "SUCCESS",
           "value": "SUCCESS"
         },
@@ -392,9 +574,10 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "tags": [],
-          "text": "WEEK",
-          "value": "WEEK"
+          "text": "DAY",
+          "value": "DAY"
         },
         "hide": 0,
         "includeAll": false,
@@ -403,12 +586,12 @@
         "name": "mydate",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "DAY",
             "value": "DAY"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "WEEK",
             "value": "WEEK"
           },
@@ -429,8 +612,8 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-2d",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -460,5 +643,5 @@
   "timezone": "utc",
   "title": "线上环境-版本发布状态",
   "uid": "Dckcm-xiK",
-  "version": 29
+  "version": 40
 }
