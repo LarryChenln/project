@@ -1,0 +1,47 @@
+select t.今天 ,
+    MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,
+    MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,
+    MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,
+    MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    
+    sum(cnt) TOTAL
+from 
+(
+SELECT
+   "Toda"  AS '今天',
+   pub_status AS pub_status,
+   count(pub_id) AS cnt
+  FROM
+   cmdb_jenkinspub
+  WHERE
+   pub_env = "线上环境"
+  AND DATEDIFF(pub_date,NOW())=0
+   ) t;
+   
+   
+   
+   
+   
+   
+===============================================
+
+select t.应用名 ,
+    MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,
+    MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,
+    MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,
+    MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    
+    sum(cnt) TOTAL
+from 
+(
+SELECT
+   pub_jobname  AS '应用名',
+   pub_status AS pub_status,
+   count(pub_id) AS cnt
+  FROM
+   cmdb_jenkinspub
+  WHERE
+   pub_env = "线上环境"
+  AND pub_date > DATE_SUB(CURDATE(), INTERVAL 1 $mydate)
+  GROUP BY
+   pub_jobname,pub_status
+   ) t
+   group by t.应用名;
