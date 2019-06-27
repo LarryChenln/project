@@ -1,0 +1,382 @@
+   select t.应用名 ,
+       MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,
+       MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,
+       MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,
+       MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    
+       sum(cnt) TOTAL
+   from 
+   (
+   SELECT
+      pub_jobname  AS '应用名',
+      pub_status AS pub_status,
+	  UNIX_TIMESTAMP(pub_date) as time_sec,
+      count(pub_id) AS cnt
+     FROM
+      cmdb_jenkinspub
+     WHERE
+      pub_env = "线上环境"
+     AND $__timeFilter(pub_date)
+     GROUP BY
+      pub_jobname,pub_status
+      ) t
+      group by t.应用名;
+      
+      
+      
+      ####
+      grafana右上角自由选择时间，显示各个应用发版状态的统计
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ###   以下  grafana结合mysql数据源范例
+      {
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 38,
+  "iteration": 1561605537169,
+  "links": [],
+  "panels": [
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "description": "",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 12,
+        "w": 14,
+        "x": 0,
+        "y": 0
+      },
+      "id": 27,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "   select t.应用名 ,\n       MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,\n       MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,\n       MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,\n       MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    \n       sum(cnt) TOTAL\n   from \n   (\n   SELECT\n      pub_jobname  AS '应用名',\n      pub_status AS pub_status,\n\t  UNIX_TIMESTAMP(pub_date) as time_sec,\n      count(pub_id) AS cnt\n     FROM\n      cmdb_jenkinspub\n     WHERE\n      pub_env = \"线上环境\"\n     AND $__timeFilter(pub_date)\n     GROUP BY\n      pub_jobname,pub_status\n      ) t\n      group by t.应用名;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "timeFrom": null,
+      "title": "各应用发版统计",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "description": "",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 4,
+        "w": 10,
+        "x": 14,
+        "y": 0
+      },
+      "id": 31,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "   select t.日期 ,\n       MAX(CASE t.pub_status WHEN 'SUCCESS' THEN cnt ELSE 0 END ) SUCCESS,\n       MAX(CASE t.pub_status WHEN 'FAILURE' THEN cnt ELSE 0 END ) FAILURE,\n       MAX(CASE t.pub_status WHEN 'ABORTED' THEN cnt ELSE 0 END ) ABORTED,\n       MAX(CASE t.pub_status WHEN 'UNSTABLE' THEN cnt ELSE 0 END ) UNSTABLE,    \n       sum(cnt) TOTAL\n   from \n   (\n   SELECT\n      'date'  AS '日期',\n      pub_status AS pub_status,\n\t  UNIX_TIMESTAMP(pub_date) as time_sec,\n      count(pub_id) AS cnt\n     FROM\n      cmdb_jenkinspub\n     WHERE\n      pub_env = \"线上环境\"\n     AND $__timeFilter(pub_date)\n     GROUP BY\n      pub_status\n      ) t\n      group by t.日期;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "timeFrom": null,
+      "title": "线上环境发版统计",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 24,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 3,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "SELECT *\nfrom \n(select pub_jobname as '应用名',pub_status as '发布状态',pub_description as '描述',pub_date as '发布时间' from cmdb_jenkinspub where pub_env=\"线上环境\" AND pub_status=\"$status\") aba;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "发版状态 $status 详情",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "mysql-cmdb",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 20,
+      "isNew": true,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 3,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+          "pattern": "/@time.*/",
+          "type": "date"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "dsType": "elasticsearch",
+          "format": "table",
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "domain_name:$dm AND status:$status AND server_ip:$dh",
+          "rawSql": "SELECT *\nfrom \n(select pub_jobname as '应用名',pub_status as '发布状态',pub_description as '描述',pub_date as '发布时间' from cmdb_jenkinspub where pub_env=\"线上环境\" AND pub_jobname=\"$pubjobname\") aba;",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "应用$pubjobname发布详情",
+      "transform": "table",
+      "type": "table"
+    }
+  ],
+  "refresh": "15m",
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "gyl-hshcwh",
+          "value": "gyl-hshcwh"
+        },
+        "datasource": "mysql-cmdb",
+        "hide": 0,
+        "includeAll": false,
+        "label": "应用名",
+        "multi": false,
+        "name": "pubjobname",
+        "options": [],
+        "query": "select DISTINCT pub_jobname  from cmdb_jenkinspub;",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "SUCCESS",
+          "value": "SUCCESS"
+        },
+        "datasource": "mysql-cmdb",
+        "hide": 0,
+        "includeAll": false,
+        "label": "状态",
+        "multi": false,
+        "name": "status",
+        "options": [],
+        "query": "select DISTINCT pub_status  from cmdb_jenkinspub;",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now/M",
+    "to": "now/M"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "Asia/Shanghai",
+  "title": "test-mysql-time",
+  "uid": "Dckxq-xiK",
+  "version": 8
+}
+      
+      
