@@ -224,3 +224,27 @@ http://www.larry.com/?name=dada
 http://www.larry.com/?name=Shirley
 http://www.larry.com/?name=karin
 '''
+
+
+
+
+
+
+
+from functools import reduce
+li = [2,4,5,6,8,12]
+
+b=filter(lambda x:x % 2 == 0 ,li)
+for i in b:
+    print(i,end=" ")
+  
+  
+a=map(lambda x:x+2,li)
+print()
+for i in a:
+    print(i,end=" ")
+
+
+print()
+c=reduce(lambda x,y:x+y ,li)
+print(c)
