@@ -248,3 +248,27 @@ for i in a:
 print()
 c=reduce(lambda x,y:x+y ,li)
 print(c)
+
+
+
+
+
+##利用yield 读取大文件
+def myreadlines(f,split_str):
+    buf = ''
+    while True:
+        while split_str in buf:
+            pos = buf.index(split_str)
+            yield buf[:pos]
+            buf = buf[pos+len(split_str):]
+        chunk = f.read(4096)
+        #判断文件边界是否读至文件末尾
+        if not chunk:
+            yield buf
+            break
+        buf += chunk
+
+with open('/tmp/test.txt','r')as f:
+    for line in myreadlines(f,'{|}'):
+        print(line)
+
