@@ -272,3 +272,18 @@ with open('/tmp/test.txt','r')as f:
     for line in myreadlines(f,'{|}'):
         print(line)
 
+
+
+####################################
+## 统计
+
+from collections import Counter
+ip_list = ['172.17.12.11','172.30.16.56','172.17.12.11','172.30.16.59','172.17.12.11','172.30.16.56','172.17.12.11','172.30.16.53']
+count = Counter(ip_list)
+ips = ['192.168.0.1']
+count.update(ips)
+print(count)
+##top n
+print(count.most_common(2))
+
+####################################
