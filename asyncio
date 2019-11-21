@@ -1,0 +1,71 @@
+##python 协程 (3.5之后支持的原生方法）
+
+import asyncio,time
+
+async def get_html(sleep_time):
+    print('start download html')
+    #模拟耗时的一个操作
+    await asyncio.sleep(2)
+    print('end download html')
+
+
+
+if __name__ == '__main__':
+    task1 = get_html(2)
+    task2 = get_html(3)
+    task3 = get_html(2)
+    task4 = get_html(2)
+    task5 = get_html(2)
+
+    tasks = [task1,task2,task3,task4,task5]
+    ## start loop
+    loop = asyncio.get_event_loop()
+    start_time = time.time()
+    loop.run_until_complete(asyncio.wait(tasks))
+    print('Done total times : {}'.format(time.time()-start_time))
+    
+    
+    
+    
+    ### --------------------------------------###
+    ##python 协程 (3.5之后支持的原生方法,模拟终端CTRL+C）
+
+import asyncio,time
+
+async def get_html(sleep_time):
+    print('start download html')
+    #模拟耗时的一个操作
+    await asyncio.sleep(2)
+    print('end download html')
+
+
+
+if __name__ == '__main__':
+    task1 = get_html(2)
+    task2 = get_html(3)
+    task3 = get_html(2)
+    task4 = get_html(2)
+    task5 = get_html(2)
+
+    tasks = [task1,task2,task3,task4,task5]
+    ## start loop
+    loop = asyncio.get_event_loop()
+    start_time = time.time()
+    try:
+        loop.run_until_complete(asyncio.wait(tasks))
+    except KeyboardInterrupt:
+        all_tasks = asyncio.Task.all_tasks()
+        for task in all_tasks:
+            print('task canceled')
+            print(task.cancel())
+
+        loop.stop()
+        loop.run_forever()
+    finally:
+        loop.close()
+
+    print('Done total times : {}'.format(time.time()-start_time))
+    
+    
+    
+    
