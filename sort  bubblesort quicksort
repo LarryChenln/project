@@ -10,6 +10,23 @@ def setFunc(list):
     return list
 
 
+## quick sort
+
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    piovt = arr[len(arr) // 2]
+    left = [x for x in arr if x < piovt]
+    middle = [x for x in arr if x == piovt]
+    right = [x for x in arr if x > piovt]
+    return quick_sort(left)+ middle + quick_sort(right)
+
+my_list = [2,3,7,5,1,9,4]
+print(quick_sort(my_list))
+
+
+
+
 #快排 Python
 nums=[2,3,1,2,3,5,6,9,2,3,7]
 def QuickSort(nums):
