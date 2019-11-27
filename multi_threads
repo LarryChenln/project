@@ -1,0 +1,59 @@
+from subprocess import PIPE, Popen
+from concurrent.futures import ThreadPoolExecutor,as_completed
+from concurrent.futures import ProcessPoolExecutor
+
+
+commands = 'ping %s -c 3 -s 64  -q'
+
+def exec(cmd):
+    ip = cmd.split(' ')[1]
+    d={}
+    p = Popen(cmd, stderr=PIPE, stdout=PIPE, shell=True)
+    result = p.communicate()
+    # print(result)
+    if len(result) >= 1:
+        a = result[0].decode('utf8').split()
+        # print(a)
+        if a[16] == str('received,') and a[21] == 'min/avg/max/stddev':
+            rate_value=str(a[17]).split('%')[0]
+            d['loss_rate']=float(rate_value)
+            eles=a[23]
+            eles=eles.split('/')
+            # print(eles)
+            d['min_time_ms']=float(eles[0])
+            d['avg_time_ms'] = float(eles[1])
+            d['max_time_ms'] = float(eles[2])
+
+    return "ping {ip} {d}".format(d=d,ip=ip)
+
+if __name__ == '__main__':
+    import time
+    ips = '''
+        192.168.1.2,192.168.9.9'''
+
+    all_commands = [(commands % x)for x in ips.split(',') if x][1:]
+
+    # with ThreadPoolExecutor(40) as executor:
+    #     tasks = [executor.submit(exec,(command)) for command in all_commands]
+    #     start_time = time.time()
+    #     for future in as_completed(tasks):
+    #         try:
+    #             data = future.result()
+    #             print(data)
+    #         except:
+    #             pass
+    # 
+    #     print("total time: {}".format (time.time() - start_time))
+    #     print('lines : ',len(all_commands))
+
+
+    ### processing
+    with ProcessPoolExecutor(40) as executor:
+        tasks = [executor.submit(exec, (command)) for command in all_commands]
+        start_time = time.time()
+        for future in as_completed(tasks):
+            data = future.result()
+            print(data)
+
+        print("total time: {}".format (time.time() - start_time))
+        print('lines : ',len(all_commands))
