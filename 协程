@@ -149,3 +149,35 @@ if __name__ == '__main__':
     # loop.run_until_complete(task1)
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
+    
+    
+    
+    
+==========================================
+    
+import asyncio
+import time
+
+async def get_html(url):
+    await asyncio.sleep(1)
+    return "Done {url}".format(url=url)
+
+
+async def mm():
+    tasks = []
+    for i in range(800):
+        url = "http://www.larry.com/{}".format(i)
+        tasks.append(asyncio.ensure_future(get_html(url)))
+    for task in asyncio.as_completed(tasks):
+        result = await task
+        print(result)
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    start_time = time.time()
+    loop.run_until_complete(mm())
+    print(time.time() - start_time)
+    
+    
+    
