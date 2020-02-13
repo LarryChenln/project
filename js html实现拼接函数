@@ -1,0 +1,21 @@
+//实现一个站位拼接的方法
+        
+        /* use it 
+          var optionData= {name: "flower",selected:true, spell: "abc", value:"1"};
+          var optionStr='<option value="{value}" match="{spell}" selected="{selected}">{name}</option>'.signMix(optionData)
+          console.log(optionStr)
+        */
+        
+        String.prototype.signMix= function() {
+            if(arguments.length === 0) return this;
+            var param = arguments[0], str= this;
+            if(typeof(param) === 'object') {
+                for(var key in param)
+                    str = str.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);
+                return str;
+            } else {
+                for(var i = 0; i < arguments.length; i++)
+                    str = str.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
+                return str;
+            }
+        }
