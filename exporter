@@ -1,0 +1,24 @@
+# _*_ coding:utf-8 _*_
+
+
+import random
+import prometheus_client
+from prometheus_client import Gauge,Counter
+from flask import Response, Flask
+
+app = Flask(__name__)
+
+random_value = Gauge("random_value", "Random value of the request")
+requests_total = Counter("request_count", "Total request cout of the host")
+
+@app.route("/metrics")
+def r_value():
+    random_value.set(random.randint(0, 10))
+    requests_total.inc()
+    all_data = prometheus_client.generate_latest(random_value)
+    all_data += prometheus_client.generate_latest(requests_total)
+    return Response(all_data,mimetype="text/plain")
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0",port=5002)
