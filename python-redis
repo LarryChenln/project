@@ -1,0 +1,39 @@
+import redis
+r = redis.Redis(host='192.168.43.49',port=6379,password='123456',db=0)
+
+#有序集合
+r.zadd('salary',{'tom':6000,'jim':8000,'jack':12000})
+print(r.zrange('salary',0,-1,withscores=True))
+
+#操作set
+r.sadd('name','value')
+r.smembers('name')
+
+##操作hash
+r.hset('name','key','value')
+r.hset('name','key')
+
+##操作字符
+r.set('name','value')
+r.get('name')
+
+##操作列表
+r.lpush()
+r.lpop()
+r.lrange()
+r.lset()
+
+
+##常用cmd
+#查看key是否存在
+r.exists('key')
+#删除key
+r.delete('key')
+#查看key类型
+r.type('key')
+#rename
+r.rename('key','newkey')
+#see key value
+r.get('key')
+#设置过期时间(ex)
+r.set('key','value',ex=300)
