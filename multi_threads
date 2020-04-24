@@ -57,3 +57,30 @@ if __name__ == '__main__':
 
         print("total time: {}".format (time.time() - start_time))
         print('lines : ',len(all_commands))
+
+
+
+
+
+    def myPP(module,tag,commit):
+    print("module:",module)
+    print("tag:",tag)
+    print("commit:",commit)
+
+
+    lis = [('lak','master1.0','xxxxx'),('fin_order','master2.9','yyyyy')]
+    with ThreadPoolExecutor(10) as executor:
+        tasks = [executor.submit(myPP,(command[0]),(command[1]),(command[2])) for command in lis]
+        start_time = time.time()
+        for future in as_completed(tasks):
+            try:
+                data = future.result()
+                print("data:",data)
+            except:
+                pass
+
+        print("total time: {}".format (time.time() - start_time))
+
+
+
+
