@@ -17,11 +17,22 @@ r.hset('name','key')
 r.set('name','value')
 r.get('name')
 
-##操作列表
+##操作列表（队列）
 r.lpush()
 r.lpop()
 r.lrange()
 r.lset()
+127.0.0.1:6379> lpush mylist a b c d
+(integer) 4
+127.0.0.1:6379> lrange mylist 0 -1
+1) "d"
+2) "c"
+3) "b"
+4) "a"
+127.0.0.1:6379> rpop mylist
+"a"
+127.0.0.1:6379> rpop mylist
+"b"
 
 
 ##常用cmd
