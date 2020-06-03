@@ -27,3 +27,38 @@ with open('/tmp/IPs.txt','r')as f:
         except pexpect.EOF:
             print (p.before)
             print (sys.stderr, '<the end>')
+
+
+
+
+#####------#####
+
+import sys
+import pexpect
+
+
+google_auth = str(input("Pls enter google auth code here :"))
+if len(google_auth) == 6 and google_auth.isdigit():
+    user = 'chen.qingyan'
+    password = 'xxxxxx '+google_auth
+    ip = "192.168.0.1"
+    expect_list = ['(yes/no)', 'password:']
+    p = pexpect.spawn('ssh %s@%s' % (user, ip))
+    try:
+        while True:
+            idx = p.expect(expect_list)
+            # print (p.before + expect_list[idx])
+            if idx == 0:
+                print ("yes")
+                p.sendline('yes')
+            elif idx == 1:
+                print ('password:',password)
+                p.sendline(password)
+    except pexpect.TIMEOUT:
+        print (sys.stderr, 'timeout')
+    except pexpect.EOF:
+        print (p.before)
+        print (sys.stderr, '<the end>')
+else:
+    print("google auth code error !")
+    sys.exit(500)
