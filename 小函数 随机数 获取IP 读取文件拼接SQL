@@ -1,3 +1,24 @@
+
+def mytime(minute=None):
+    '''
+    打印标准时间
+    :param minute: int +|-
+    :return: 2020-09-28 16:42:44.219221
+    '''
+    from  datetime import timedelta, datetime
+    if minute is None:
+        return datetime.today()
+    elif isinstance(minute,int):
+        now = datetime.today()
+        return now + timedelta(minutes=minute)
+
+
+interval_5_min = str(mytime(minute=-5)) + " 至 " + str(mytime())
+print(interval_5_min)
+
+
+
+
 ###二分查找###
 count = 0
 def binarySearch(lis,left,right,num):
