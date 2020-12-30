@@ -1,0 +1,19 @@
+from urllib import request
+import json
+
+# 请求体数据
+request_data ={
+    "account": "xxxxxx",
+    "sign": "xxxx"
+    }
+
+headers ={
+    "content-type":"application/json"
+}
+
+req = request.Request(url = "http://host:port/mm.nn.zz",
+                headers = headers,
+                data = json.dumps(request_data).encode("utf-8"))
+                
+reps = request.urlopen(req).read().decode("utf-8")
+print(reps)
