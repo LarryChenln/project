@@ -38,6 +38,8 @@ r.lset()
 ##常用cmd
 #查看key是否存在
 r.exists('key')
+#自增,对key的值进行加1
+ r.incr('key')
 #删除key
 r.delete('key')
 #查看key类型
