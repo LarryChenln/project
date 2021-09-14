@@ -17,6 +17,14 @@ interval_5_min = str(mytime(minute=-5)) + " 至 " + str(mytime())
 print(interval_5_min)
 
 
+# 判断系统文件大小
+def getFileSize(path):
+    try:
+        size = os.path.getsize(path)
+        return size / 1024 / 1024
+    except Exception as err:
+        print(err)
+
 
 
 ###二分查找###
