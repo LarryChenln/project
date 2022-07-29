@@ -1,0 +1,70 @@
+#!/usr/bin/python2.7
+# -*- coding:utf8 -*-
+
+import requests
+import time
+import json
+
+domains_obj = {
+    "www_baidu_com_delay_sec":"https://xxx.com",
+    "www_sina_com":"https://xxx.com"
+}
+
+
+def myexec(cmd):
+    from subprocess import PIPE, Popen
+    p = Popen(cmd, stderr=PIPE, stdout=PIPE, shell=True)
+    result = p.communicate()
+    return result
+
+
+
+def trans_to_n9e(payload):
+    r = requests.post(n9e_url,data=json.dumps(payload))
+    print(r.text)
+
+
+def explore_domain_delay_func(domain):
+    try:
+        r = requests.get(domain,timeout=2)
+        return r.elapsed.total_seconds()
+    except Exception as err:
+        print("探测域名超时, msg: {err}".format(err=err))
+        return 2
+
+
+
+if __name__ == "__main__":
+    curtime = int(time.time())
+    n9e_url = "http://127.0.0.1:2080/api/collector/push"
+    payload = []
+    for domain_key, domain_url in domains_obj.items():
+        # print("key: {k} value: {v}".format(k=domain_key, v=domain_url))
+        n9e_metric = {"step": 60, "extra": "", "tags": "", "endpoint": "upex-ult-cloud"}
+        n9e_metric["metric"] = domain_key
+        n9e_metric["timestamp"] = curtime
+        n9e_metric["value"] = float(explore_domain_delay_func(domain=domain_url))
+        payload.append(n9e_metric)
+
+    try:
+        # 获取ping IP结果，平均延时
+        ip = "18.180.x.x"
+        ping_cmd = "ping -i 0.2 -c 10 {ip}".format(ip=ip)
+        obj = myexec(ping_cmd)
+        result = obj[0].decode('utf8')
+        print(result)
+        avg_sec = [ x for x in result.split("\n") ][-2].split("/")[4]
+        n9e_metric = {"step": 60, "extra": "", "tags": "", "endpoint": "upex-ult-cloud"}
+        n9e_metric["metric"] = "18_180_x_x_delay_sec"
+        n9e_metric["timestamp"] = curtime
+        n9e_metric["value"] = float(avg_sec) / 1000
+        payload.append(n9e_metric)
+    except Exception as err:
+        print("ping 18.180.120.1 出现异常 : {err}".format(err=err))
+
+    # ## 上报夜莺
+    if payload:
+        print("payload: {payload}".format(payload=payload))
+        trans_to_n9e(payload)
+    else:
+        print("payload: {payload}".format(payload=payload))
