@@ -1,0 +1,43 @@
+import os,sys
+
+
+code_block = '''
+- type: log
+  fields:
+    log_source: yyy-xxx-logs
+  tags:%s
+  ignore_older: 1h
+  max_bytes: 204800
+  enabled: true
+  paths:
+    - /data/xxx.log
+ 
+
+'''
+
+# 读取源文件并进行加工，保存成源文件名+"_new"
+srcfilepath = "/tmp/filebeat.yml"
+with open(srcfilepath,"r") as f:
+    with open(srcfilepath + "_new", "w") as f_new:
+        for line in f.readlines():
+            # print(line)
+            if "tags" in line:
+                tag_value = line.split(":")[-1]
+            if "output.kafka" in line:
+                # 指定位置加入 特定内容
+                f_new.write(code_block % (tag_value))
+                f_new.writelines("output.kafka:\n")
+            else:
+                f_new.writelines(line)
+
+#判断文件是否为空，并覆盖源文件名
+newfilesize = os.path.getsize(srcfilepath + "_new")
+if newfilesize > 1000:
+    print("新文件已成功生成，正在替换源文件...")
+    os.rename(srcfilepath + "_new", srcfilepath)
+    # 重启服务
+    # systemctl restart filebeat
+else:
+    print("新文件内容有问题，请进行check")
+    sys.exit(2)
+
