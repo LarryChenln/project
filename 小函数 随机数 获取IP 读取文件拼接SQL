@@ -1,4 +1,24 @@
 
+##############################################################################
+import datetime
+import time
+mytime="2022-11-17T04:52:00Z"
+
+def str_to_timestamp_3(str_time=None, fmt='%Y-%m-%dT%H:%M:%SZ'):
+    if str_time:
+        d = datetime.datetime.strptime(str_time, fmt)
+        timeStamp = int(time.mktime(d.timetuple())) + 8 * 3600
+        # 转换成localtime
+        time_local = time.localtime(timeStamp)
+        # 转换成新的时间格式(2016-05-05 20:28:54)
+        dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
+        return dt
+        ## 2022-11-17T04:52:00Z ---> 2022-11-17 12:52:00
+    return int(time.time())
+##测试
+print(str_to_timestamp_3(str_time=mytime))
+##############################################################################
+
 def mytime(minute=None):
     '''
     打印标准时间
